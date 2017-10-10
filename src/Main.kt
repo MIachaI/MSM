@@ -21,17 +21,10 @@ fun main (args : Array<String>){
         return
     }
     Utils.setGrainsInArray(grains,arraySize,previousStepArray)
-
-
-    for (i in 0..previousStepArray.size-1){
-        for (j in 0..previousStepArray.size-1){
-
-            nextStepArray[i][j]
-
-
-        }
-    }
-
+    Utils.printArray(previousStepArray)
+    Utils.grainGrow(arraySize,arraySize,previousStepArray,nextStepArray)
+    println(" ")
+    println(" ")
     Utils.printArray(previousStepArray)
 }
 
