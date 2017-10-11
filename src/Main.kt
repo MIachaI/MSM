@@ -12,7 +12,7 @@ fun main (args : Array<String>){
     var arraySize = input.nextInt()
 
     var previousStepArray = Array(arraySize, {Array(arraySize,{0})})
-    var nextStepArray = previousStepArray
+    var nextStepArray = Array(arraySize, {Array(arraySize,{0})})
 
     println("Enter number of grains")
     val grains = input.nextInt()
@@ -21,7 +21,15 @@ fun main (args : Array<String>){
         return
     }
     Utils.setGrainsInArray(grains,arraySize,previousStepArray)
-    Utils.printArray(previousStepArray)
+
+    for (i in 0..arraySize-1){
+        for (j in 0..arraySize-1){
+            nextStepArray[i][j]=previousStepArray[i][j]
+        }
+    }
+
+    Utils.printArray(nextStepArray)
+
     Utils.grainGrow(arraySize,arraySize,previousStepArray,nextStepArray)
     println(" ")
     println(" ")
