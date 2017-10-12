@@ -31,12 +31,11 @@ fun main (args : Array<String>){
     }
 
     Utils.printArray(nextStepArray)
-
     Utils.grainGrow(arraySize,arraySize,previousStepArray,nextStepArray)
     println(" ")
     Utils.printArray(previousStepArray)
-    Utils.saveToFile(arraySize,arraySize,previousStepArray)
-    Utils.writeFromFile()
+    //Utils.saveToFile(arraySize,arraySize,previousStepArray)
+    //Utils.writeFromFile()
 
 
     }

@@ -18,8 +18,8 @@ class Utils{
             val random = Random()
             while(iterator <= grains) {
 
-                var xSize = random.nextInt(arraySize)
-                var ySize = random.nextInt(arraySize)
+                var xSize = random.nextInt(arraySize-2)+1
+                var ySize = random.nextInt(arraySize-2)+1
                 while (previousStepArray[xSize][ySize] == 0) {
                     previousStepArray[xSize][ySize] = iterator
                     iterator++
@@ -37,22 +37,24 @@ class Utils{
          * @param nextStepArray         Two dimensional array to update changes between previous and next step in real time
          */
         fun grainGrow(xSize: Int, ySize: Int, previousStepArray: Array<Array<Int>>, nextStepArray: Array<Array<Int>>){
-            var buffer = 0;
-            //while (true) {
-                for (i in 0..xSize - 1) {
-                    for (j in 0..ySize - 1) {
-                        printArray(previousStepArray)
-                        println("")
-                        if (previousStepArray[i][j] == 0) {
-                            try {
 
+            while (true) {
+                var buffer = 0;
+                for (i in 1..xSize - 2) {
+                    for (j in 1..ySize - 2) {
+                        if (previousStepArray[i][j] == 0) {
+                            buffer++
+                            try {
                                 if (previousStepArray[i - 1][j] != 0) {
                                     nextStepArray[i][j] = previousStepArray[i - 1][j]
-                                } else if (previousStepArray[i + 1][j] != 0) {
+                                }
+                                else if (previousStepArray[i + 1][j] != 0) {
                                     nextStepArray[i][j] = previousStepArray[i + 1][j]
-                                } else if (previousStepArray[i][j - 1] != 0) {
+                                }
+                                else if (previousStepArray[i][j - 1] != 0) {
                                     nextStepArray[i][j] = previousStepArray[i][j - 1]
-                                } else if (previousStepArray[i][j + 1] != 0) {
+                                }
+                                else if (previousStepArray[i][j + 1] != 0) {
                                     nextStepArray[i][j] = previousStepArray[i][j + 1]
                                 }
 
@@ -62,24 +64,27 @@ class Utils{
                             }
                         }
                     }
+                }
+                    if(buffer==0) return
+
                     for (i in 0..xSize - 1) {
                         for (j in 0..ySize - 1) {
                             previousStepArray[i][j] = nextStepArray[i][j]
                         }
                     }
-                //}
-            }}
+                }
+            }
 
         /**
          * Print array to console
          * @param arrayToPrint              Two dimensional array to print
          */
         fun printArray(arrayToPrint: Array<Array<Int>>) {
-            for (i in 0..arrayToPrint.size - 1) {
+            for (i in 1..arrayToPrint.size - 2) {
                 println(" ")
-                for (j in 0..arrayToPrint.size - 1) {
+                for (j in 1..arrayToPrint.size - 2) {
                     print(" ")
-                    //print(arrayToPrint[i][j])
+                    print(arrayToPrint[i][j])
                 }
             }
         }
@@ -91,15 +96,15 @@ class Utils{
          * @param previousStepArray         Two dimensional array to save
          */
         fun saveToFile(xSize: Int, ySize: Int, previousStepArray: Array<Array<Int>>){
-            val file = File("export.txt")
-            file.writeText("$xSize $ySize 1")
-            file.appendText("\n")
+            val fileToWrite = File("export.txt")
+            fileToWrite.writeText("$xSize $ySize 1")
+            fileToWrite.appendText("\n")
             for (i in 0..previousStepArray.size - 1) {
                 for (j in 0..previousStepArray.size - 1) {
-                    file.appendText("$i $j 0 ")
-                    var ij = previousStepArray[i][j]
-                    file.appendText(ij.toString())
-                    file.appendText("\n")
+                    fileToWrite.appendText("$i $j 0 ")
+                    var previousArrayImage = previousStepArray[i][j]
+                    fileToWrite.appendText(previousArrayImage.toString())
+                    fileToWrite.appendText("\n")
                 }
             }
         }
@@ -107,6 +112,10 @@ class Utils{
         fun writeFromFile(){
             val inputStream: InputStream = File("export.txt").inputStream()
             val inputString = inputStream.bufferedReader().use { it.readText() }
+            var inputList = inputString.split(" ")
+            for(x in inputList){
+
+            }
             println(inputString)
         }
     }}
