@@ -5,6 +5,8 @@ package mmGui
 import java.util.Scanner
 import java.util.Random
 import Utils
+import java.io.BufferedWriter
+import java.io.File
 
 fun main (args : Array<String>){
     println("Enter size of an array")
@@ -32,8 +34,12 @@ fun main (args : Array<String>){
 
     Utils.grainGrow(arraySize,arraySize,previousStepArray,nextStepArray)
     println(" ")
-    println(" ")
     Utils.printArray(previousStepArray)
-}
+    Utils.saveToFile(arraySize,arraySize,previousStepArray)
+    Utils.writeFromFile()
+
+
+    }
+
 
 
