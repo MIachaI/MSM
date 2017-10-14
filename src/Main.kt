@@ -3,10 +3,8 @@
  */
 package mmGui
 import java.util.Scanner
-import java.util.Random
 import Utils
-import java.io.BufferedWriter
-import java.io.File
+import java.awt.image.BufferedImage
 
 fun main (args : Array<String>){
     println("Enter size of an array")
@@ -29,13 +27,16 @@ fun main (args : Array<String>){
             nextStepArray[i][j]=previousStepArray[i][j]
         }
     }
+    val off_Image = BufferedImage(100, 50,BufferedImage.TYPE_INT_ARGB)
 
-    Utils.printArray(nextStepArray)
+    //Utils.printArray(nextStepArray)
     Utils.grainGrow(arraySize,arraySize,previousStepArray,nextStepArray)
-    println(" ")
-    Utils.printArray(previousStepArray)
+    //println(" ")
+    //Utils.printArray(previousStepArray)
     //Utils.saveToFile(arraySize,arraySize,previousStepArray)
     //Utils.writeFromFile()
+
+    Drawing.drawArray(arraySize,arraySize,previousStepArray, Drawing.setColors(grains))
 
 
     }

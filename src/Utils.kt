@@ -1,6 +1,12 @@
+import java.awt.Color
+import java.awt.image.BufferedImage
 import java.io.File
 import java.io.InputStream
 import java.util.*
+import java.io.IOException
+import javax.imageio.ImageIO
+
+
 
 /**
  * Created by MIachaI on 10.10.2017.
@@ -97,7 +103,7 @@ class Utils{
          */
         fun saveToFile(xSize: Int, ySize: Int, previousStepArray: Array<Array<Int>>){
             val fileToWrite = File("export.txt")
-            fileToWrite.writeText("$xSize $ySize 1")
+            fileToWrite.writeText("$xSize $ySize 1 ")
             fileToWrite.appendText("\n")
             for (i in 0..previousStepArray.size - 1) {
                 for (j in 0..previousStepArray.size - 1) {
@@ -118,5 +124,7 @@ class Utils{
             }
             println(inputString)
         }
+
+
     }}
 
