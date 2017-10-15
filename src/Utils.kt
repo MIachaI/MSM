@@ -48,6 +48,7 @@ class Utils{
                 var buffer = 0;
                 for (i in 1..xSize - 2) {
                     for (j in 1..ySize - 2) {
+                        println("$i $j")
                         if (previousStepArray[i][j] == 0) {
                             buffer++
                             try {

@@ -2,11 +2,13 @@
  * Created by MIachaI on 07.10.2017.
  */
 package mmGui
+
 import java.util.Scanner
 import Utils
 import java.awt.image.BufferedImage
 
 fun main (args : Array<String>){
+
     println("Enter size of an array")
     val input = Scanner(System.`in`)
     var arraySize = input.nextInt()
@@ -27,7 +29,6 @@ fun main (args : Array<String>){
             nextStepArray[i][j]=previousStepArray[i][j]
         }
     }
-    val off_Image = BufferedImage(100, 50,BufferedImage.TYPE_INT_ARGB)
 
     //Utils.printArray(nextStepArray)
     Utils.grainGrow(arraySize,arraySize,previousStepArray,nextStepArray)
