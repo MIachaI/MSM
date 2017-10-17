@@ -7,6 +7,8 @@ import javax.imageio.ImageIO
  * Created by MIachaI on 13.10.2017.
  */
 class Drawing {
+
+
     companion object {
         /**
          * Sets random color to certain grain - it gives high scaleability
@@ -34,7 +36,7 @@ class Drawing {
          * @param arrayToDraw                   An array we are going to draw via the BufferedImage method
          * @param arrayOfColors                 An array of colors bonded to certain grains (nucleons)
          */
-        fun drawArray(xSize: Int, ySize: Int, arrayToDraw: Array<Array<Int>>, arrayOfColors: Array<Int>){
+        fun drawArray(xSize: Int, ySize: Int, arrayToDraw: Array<Array<Int>>, arrayOfColors: Array<Int>, fileName: String){
             var img =  BufferedImage(xSize, ySize, BufferedImage.TYPE_INT_RGB)
             var fileToSave: File
             for (i in 1..arrayToDraw.size - 2) {
@@ -43,7 +45,7 @@ class Drawing {
                 }
             }
             try {
-                fileToSave = File("Output.jpg")
+                fileToSave = File("photos/$fileName.jpg")
                 ImageIO.write(img, "jpg", fileToSave)
             } catch (e: IOException) {
                 println("Error: " + e)

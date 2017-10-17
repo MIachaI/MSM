@@ -42,13 +42,13 @@ class Utils{
          * @param previousStepArray     Two dimensional array to compare certain cells
          * @param nextStepArray         Two dimensional array to update changes between previous and next step in real time
          */
-        fun grainGrow(xSize: Int, ySize: Int, previousStepArray: Array<Array<Int>>, nextStepArray: Array<Array<Int>>){
-
+        fun grainGrow(xSize: Int, ySize: Int, previousStepArray: Array<Array<Int>>, nextStepArray: Array<Array<Int>>, colorSet: Array<Int>){
+            var name = 0
             while (true) {
+
                 var buffer = 0;
                 for (i in 1..xSize - 2) {
                     for (j in 1..ySize - 2) {
-                        println("$i $j")
                         if (previousStepArray[i][j] == 0) {
                             buffer++
                             try {
@@ -72,11 +72,16 @@ class Utils{
                         }
                     }
                 }
+
+                Drawing.drawArray(xSize,ySize,previousStepArray,colorSet,name.toString())
+                name++
+
                     if(buffer==0) return
 
                     for (i in 0..xSize - 1) {
                         for (j in 0..ySize - 1) {
                             previousStepArray[i][j] = nextStepArray[i][j]
+
                         }
                     }
                 }

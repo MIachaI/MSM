@@ -29,15 +29,15 @@ fun main (args : Array<String>){
             nextStepArray[i][j]=previousStepArray[i][j]
         }
     }
-
+    var colorSet = Drawing.setColors(grains)
     //Utils.printArray(nextStepArray)
-    Utils.grainGrow(arraySize,arraySize,previousStepArray,nextStepArray)
+    Utils.grainGrow(arraySize,arraySize,previousStepArray,nextStepArray, colorSet)
     //println(" ")
     //Utils.printArray(previousStepArray)
     //Utils.saveToFile(arraySize,arraySize,previousStepArray)
     //Utils.writeFromFile()
 
-    Drawing.drawArray(arraySize,arraySize,previousStepArray, Drawing.setColors(grains))
+    Drawing.drawArray(arraySize,arraySize,previousStepArray, colorSet, "output")
 
 
     }
