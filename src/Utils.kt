@@ -34,6 +34,36 @@ class Utils{
             return previousStepArray
         }
 
+        fun setDiagonalInclusionsInArray(inclusions: Int, inclusionSize: Int, arrayToBeSet: Array<Array<Int>>, arraySize: Int): Array<Array<Int>>{
+            var iterator=1
+            val random = Random()
+            while(iterator <= inclusions) {
+
+                var xSize = random.nextInt(arraySize-2*inclusionSize)+inclusionSize
+                var ySize = random.nextInt(arraySize-2*inclusionSize)+inclusionSize
+                while (arrayToBeSet[xSize][ySize] == 0) {
+                    arrayToBeSet[xSize][ySize] = -1
+                    iterator++
+                }
+            }
+            return arrayToBeSet
+        }
+
+        fun setCircleInclusionsInArray(inclusions: Int, inclusionRadius: Int, arrayToBeSet: Array<Array<Int>>, arraySize: Int): Array<Array<Int>>{
+            var iterator=1
+            val random = Random()
+            while(iterator <= inclusions) {
+
+                var xSize = random.nextInt(arraySize-2)+1
+                var ySize = random.nextInt(arraySize-2)+1
+                while (arrayToBeSet[xSize][ySize] == 0) {
+                    arrayToBeSet[xSize][ySize] = -1
+                    iterator++
+                }
+            }
+            return arrayToBeSet
+        }
+
         /**
          * This function is main engine to simulate gran growth. It requiers sizes, both x and y, and two arrays
          * on which simulation will proceed
@@ -52,16 +82,16 @@ class Utils{
                         if (previousStepArray[i][j] == 0) {
                             buffer++
                             try {
-                                if (previousStepArray[i - 1][j] != 0) {
+                                if (previousStepArray[i - 1][j] != 0 && previousStepArray[i - 1][j] != -1) {
                                     nextStepArray[i][j] = previousStepArray[i - 1][j]
                                 }
-                                else if (previousStepArray[i + 1][j] != 0) {
+                                else if (previousStepArray[i + 1][j] != 0 && previousStepArray[i + 1][j] != -1) {
                                     nextStepArray[i][j] = previousStepArray[i + 1][j]
                                 }
-                                else if (previousStepArray[i][j - 1] != 0) {
+                                else if (previousStepArray[i][j - 1] != 0 && previousStepArray[i][j - 1] != -1) {
                                     nextStepArray[i][j] = previousStepArray[i][j - 1]
                                 }
-                                else if (previousStepArray[i][j + 1] != 0) {
+                                else if (previousStepArray[i][j + 1] != 0 && previousStepArray[i][j + 1] != -1) {
                                     nextStepArray[i][j] = previousStepArray[i][j + 1]
                                 }
 
