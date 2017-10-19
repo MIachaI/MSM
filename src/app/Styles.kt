@@ -1,27 +1,29 @@
 package app
 
 import javafx.scene.text.FontWeight
-import tornadofx.Stylesheet
-import tornadofx.box
-import tornadofx.cssclass
-import tornadofx.px
+import tornadofx.*
 
 class Styles : Stylesheet(){
     companion object {
         val simulate by cssclass()
-        val simulateWidth = 100.px
+        val simulateWidth = 400.px
 
     }
 
     init{
         form and simulate {
-            padding = box(25.px)
-            fontSize = 20.px
+            padding = box(16.px)
+            fontSize = 13.px
             fontWeight = FontWeight.BOLD
-            prefWidth = simulateWidth
-            button {prefWidth = simulateWidth}
+            prefWidth = 400.px
+            textField {prefWidth = simulateWidth}
+            field {prefWidth = simulateWidth}
+            button {
+                prefWidth = simulateWidth
+
+            }
             progressIndicator{
-                prefWidth = 16.px
+                prefWidth = 13.px
                 prefHeight = prefWidth
             }
         }

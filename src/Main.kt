@@ -32,7 +32,6 @@ fun main (args : Array<String>){
     var colorSet = Drawing.setColors(grains)
     //Utils.printArray(nextStepArray)
     Utils.grainGrow(arraySize,arraySize,previousStepArray,nextStepArray, colorSet)
-    //println(" ")
     //Utils.printArray(previousStepArray)
     //Utils.saveToFile(arraySize,arraySize,previousStepArray)
     //Utils.writeFromFile()

@@ -1,25 +1,28 @@
-package GUI
-import javafx.scene.layout.VBox
+package view
+import app.Styles
 import app.User
 import app.UserModel
 import app.Styles.Companion.simulate
+import controller.engineController
 import tornadofx.*
 class MyApp: App(MyView::class)
 class MyView: View() {
     override val root = Form().addClass(simulate)
     val model = UserModel(User())
 
+
     init {
+        importStylesheet(Styles::class)
         with (root) {
-            prefWidth = 800.0
+            prefWidth = 400.0
             prefHeight = 600.0
         }
 
         form {
+
             fieldset("primary info") {
                 field("x Size") {
                    textfield(model.xSize).required()
-
                 }
 
                 field("y Size") {
@@ -31,24 +34,38 @@ class MyView: View() {
             fieldset("preferences") {
                 field("Nucleons") {
                     textfield(model.nucleonsNumber).required()
-
                 }
 
                 field("Inclusions") {
                     textfield(model.inclusionsSize).required()
-
                 }
             }
-            button("go") {
+            button("Simulate") {
                 action {
                     runAsync {
-                        var previousStepArray = Array(model.xSize.value.toInt(), {Array(model.ySize.value.toInt(),{0})})
-                        var nextStepArray = Array(model.xSize.value.toInt(), {Array(model.ySize.value.toInt(),{0})})
-                        Utils.setGrainsInArray(model.nucleonsNumber.value.toInt(),model.xSize.value.toInt(),previousStepArray)
-                        var colorSet = Drawing.setColors(model.nucleonsNumber.value.toInt())
-                        Utils.grainGrow(model.xSize.value.toInt(),model.ySize.value.toInt(),previousStepArray,nextStepArray, colorSet)
-                        Drawing.drawArray(model.xSize.value.toInt(),model.ySize.value.toInt(),previousStepArray, colorSet, "0")
-                        println("zrobione")
+            println(model.xSize.value.toInt())
+            var array = engineController.runSimulation(model.xSize.value.toInt(),model.ySize.value.toInt(), model.nucleonsNumber.value.toInt())
+            println("done")
+                    } ui { loadedText ->
+
+                    }
+                }
+            }
+            button("Export") {
+                action {
+                    runAsync {
+                        //Utils.saveToFile(model.xSize.value.toInt(),model.ySize.value.toInt())
+
+                        println("Exported")
+                    } ui { loadedText ->
+
+                    }
+                }
+            }
+            button("Import") {
+                action {
+                    runAsync {
+                        println("Imported")
                     } ui { loadedText ->
 
                     }
