@@ -9,7 +9,7 @@ import tornadofx.px
 class Styles : Stylesheet(){
     companion object {
         val simulate by cssclass()
-        val simulateWidth = 300.px
+        val simulateWidth = 100.px
 
     }
 

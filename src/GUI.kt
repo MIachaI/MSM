@@ -1,14 +1,14 @@
-
+package GUI
 import javafx.scene.layout.VBox
-
+import app.User
+import app.UserModel
+import app.Styles.Companion.simulate
 import tornadofx.*
 class MyApp: App(MyView::class)
 class MyView: View() {
-    override val root = VBox()
- var xSize = "0"
-    var ySize = "0"
-    var nucleons = "0"
-    var injections = "0"
+    override val root = Form().addClass(simulate)
+    val model = UserModel(User())
+
     init {
         with (root) {
             prefWidth = 800.0
@@ -18,48 +18,47 @@ class MyView: View() {
         form {
             fieldset("primary info") {
                 field("x Size") {
-                   textfield(xSize)
+                   textfield(model.xSize).required()
 
                 }
 
                 field("y Size") {
-                    textfield(ySize)
+                    textfield(model.ySize).required()
 
                 }
             }
 
             fieldset("preferences") {
                 field("Nucleons") {
-                    textfield(nucleons)
+                    textfield(model.nucleonsNumber).required()
 
                 }
 
                 field("Inclusions") {
-                   textfield(injections)
+                    textfield(model.inclusionsSize).required()
 
                 }
             }
+            button("go") {
+                action {
+                    runAsync {
+                        var previousStepArray = Array(model.xSize.value.toInt(), {Array(model.ySize.value.toInt(),{0})})
+                        var nextStepArray = Array(model.xSize.value.toInt(), {Array(model.ySize.value.toInt(),{0})})
+                        Utils.setGrainsInArray(model.nucleonsNumber.value.toInt(),model.xSize.value.toInt(),previousStepArray)
+                        var colorSet = Drawing.setColors(model.nucleonsNumber.value.toInt())
+                        Utils.grainGrow(model.xSize.value.toInt(),model.ySize.value.toInt(),previousStepArray,nextStepArray, colorSet)
+                        Drawing.drawArray(model.xSize.value.toInt(),model.ySize.value.toInt(),previousStepArray, colorSet, "0")
+                        println("zrobione")
+                    } ui { loadedText ->
 
-            button("Commit") {
-                action { println("Wrote to database!")}
-            }
-        }
-
-
-        button("go") {
-            action {
-                runAsync {
-                    var previousStepArray = Array(xSize.toInt(), {Array(ySize.toInt(),{0})})
-                    var nextStepArray = Array(xSize.toInt(), {Array(ySize.toInt(),{0})})
-                    Utils.setGrainsInArray(nucleons.toInt(),xSize.toInt(),previousStepArray)
-                    var colorSet = Drawing.setColors(nucleons.toInt())
-                    Utils.grainGrow(xSize.toInt(),ySize.toInt(),previousStepArray,nextStepArray, colorSet)
-                    Drawing.drawArray(xSize.toInt(),ySize.toInt(),previousStepArray, colorSet, "0")
-                } ui { loadedText ->
-
+                    }
                 }
             }
+
         }
+
+
+
         imageview() {
             scaleX = 1.0
             scaleY = 1.0

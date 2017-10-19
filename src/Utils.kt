@@ -103,7 +103,7 @@ class Utils{
                     }
                 }
 
-                Drawing.drawArray(xSize,ySize,previousStepArray,colorSet,name.toString())
+                //Drawing.drawArray(xSize,ySize,previousStepArray,colorSet,name.toString())
                 name++
 
                     if(buffer==0) return
