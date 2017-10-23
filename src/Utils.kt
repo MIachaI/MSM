@@ -12,6 +12,7 @@ import javax.imageio.ImageIO
  * Created by MIachaI on 10.10.2017.
  */
 class Utils{
+
     companion object {
         /**
          * This function was created to set grains at random places within the simulated area

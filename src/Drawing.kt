@@ -1,13 +1,19 @@
+import app.User
+import app.UserModel
+import javafx.beans.property.SimpleObjectProperty
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.IOException
 import javax.imageio.ImageIO
+import javafx.embed.swing.SwingFXUtils
+import javafx.scene.image.WritableImage
+import tornadofx.toProperty
+
 
 /**
  * Created by MIachaI on 13.10.2017.
  */
 class Drawing {
-
 
     companion object {
         /**
@@ -38,7 +44,7 @@ class Drawing {
          * @param arrayToDraw                   An array we are going to draw via the BufferedImage method
          * @param arrayOfColors                 An array of colors bonded to certain grains (nucleons)
          */
-        fun drawArray(xSize: Int, ySize: Int, arrayToDraw: Array<Array<Int>>, arrayOfColors: Array<Int>, fileName: String): BufferedImage{
+        fun drawArray(xSize: Int, ySize: Int, arrayToDraw: Array<Array<Int>>, arrayOfColors: Array<Int>, fileName: String): WritableImage {
             var img =  BufferedImage(xSize, ySize, BufferedImage.TYPE_INT_RGB)
             var fileToSave: File
             for (i in 1..arrayToDraw.size - 2) {
@@ -53,7 +59,8 @@ class Drawing {
             } catch (e: IOException) {
                 println("Error: " + e)
             }
-            return img
+            val image = SwingFXUtils.toFXImage(img, null)
+            return image
         }
 
         fun drawArrayfromImport(path: String){

@@ -5,13 +5,18 @@ import app.UserModel
 import app.Styles.Companion.simulate
 import controller.engineController
 import tornadofx.*
+
+
+
 class MyApp: App(MyView::class)
 class MyView: View() {
+    object CustomerListRequest : FXEvent(EventBus.RunOn.BackgroundThread)
     override val root = Form().addClass(simulate)
     val model = UserModel(User())
 
-
     init {
+        model.image = engineController.runSimulation(5,5,1).toProperty()
+        reloadViewsOnFocus()
         importStylesheet(Styles::class)
         with (root) {
             prefWidth = 400.0
@@ -40,12 +45,14 @@ class MyView: View() {
                     textfield(model.inclusionsSize).required()
                 }
             }
+
             button("Simulate") {
                 action {
                     runAsync {
             println(model.xSize.value.toInt())
-            var array = engineController.runSimulation(model.xSize.value.toInt(),model.ySize.value.toInt(), model.nucleonsNumber.value.toInt())
+            model.image = engineController.runSimulation(model.xSize.value.toInt(),model.ySize.value.toInt(), model.nucleonsNumber.value.toInt()).toProperty()
             println("done")
+                        fire(CustomerListRequest)
                     } ui { loadedText ->
 
                     }
@@ -64,10 +71,22 @@ class MyView: View() {
             }
             button("Import") {
                 action {
+                    //openInternalWindow(NextView::class)
+
+                    println("Imported")
+                }
                     runAsync {
-                        println("Imported")
                     } ui { loadedText ->
 
+
+                }
+            }
+            form {
+                runAsync{
+                    println(model.image.value)
+                    imageview(model.image.value) {
+                        scaleX = 1.0
+                        scaleY = 1.0
                     }
                 }
             }
@@ -76,12 +95,31 @@ class MyView: View() {
 
 
 
-        imageview() {
-            scaleX = 1.0
-            scaleY = 1.0
+
         }
 
 
 
+
+
+
+
+    }
+
+class NextApp: App(NextView::class)
+class NextView: View() {
+    override val root = Form().addClass(simulate)
+    val model = UserModel(User())
+    init {
+        importStylesheet(Styles::class)
+        with(root) {
+            prefWidth = 200.0
+            prefHeight = 200.0
+            imageview(model.image.value) {
+
+                scaleX = 1.0
+                scaleY = 1.0
+            }
+        }
     }
 }
