@@ -21,14 +21,16 @@ class User {
     val inclusionsNumberProperty = SimpleIntegerProperty()
     val inclusionsSizeProperty = SimpleIntegerProperty()
     var imageProperty = SimpleObjectProperty<WritableImage>()
+    var arrayToWorkOn = SimpleObjectProperty<Array<Array<Int>>>()
 }
 class UserModel(var integersSet: User) : ViewModel(){
-    val xSize = bind { integersSet.xSizeProperty }
+    var xSize = bind { integersSet.xSizeProperty }
     val ySize = bind { integersSet.ySizeProperty }
     val nucleonsNumber = bind { integersSet.nucleonsNumberProperty }
     val inclusionsNumber = bind { integersSet.inclusionsNumberProperty }
     val inclusionsSize = bind { integersSet.inclusionsSizeProperty }
     var image = bind { integersSet.imageProperty }
+    var array = bind {integersSet.arrayToWorkOn}
 
 
 

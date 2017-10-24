@@ -4,6 +4,7 @@ import app.User
 import app.UserModel
 import app.Styles.Companion.simulate
 import controller.engineController
+import javafx.stage.FileChooser
 import tornadofx.*
 
 
@@ -46,23 +47,12 @@ class MyView: View() {
                 }
             }
 
-            button("Simulate") {
-                action {
-                    runAsync {
-            println(model.xSize.value.toInt())
-            model.image = engineController.runSimulation(model.xSize.value.toInt(),model.ySize.value.toInt(), model.nucleonsNumber.value.toInt()).toProperty()
-            println("done")
-                        fire(CustomerListRequest)
-                    } ui { loadedText ->
 
-                    }
-                }
-            }
             button("Export") {
                 action {
                     runAsync {
-                        //Utils.saveToFile(model.xSize.value.toInt(),model.ySize.value.toInt())
-
+                        println(engineController.getArray())
+                        Utils.saveToFile(model.xSize.value.toInt(),model.ySize.value.toInt(),engineController.getArray())
                         println("Exported")
                     } ui { loadedText ->
 
@@ -71,13 +61,24 @@ class MyView: View() {
             }
             button("Import") {
                 action {
-                   chooseFile("yes")
+                    Utils.writeFromFile()
                     println("Imported")
+                    Utils.printArray(engineController.getArray())
                 }
                     runAsync {
                     } ui { loadedText ->
 
 
+                }
+            }
+            button("Simulate") {
+                action {
+                    runAsync {
+                        model.image = engineController.runSimulation(model.xSize.value.toInt(),model.ySize.value.toInt(), model.nucleonsNumber.value.toInt()).toProperty()
+                        println("done")
+                    } ui { loadedText ->
+
+                    }
                 }
             }
             form {

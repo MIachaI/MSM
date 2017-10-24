@@ -1,3 +1,4 @@
+import controller.engineController
 import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.File
@@ -141,17 +142,21 @@ class Utils{
         fun saveToFile(xSize: Int, ySize: Int, previousStepArray: Array<Array<Int>>){
             val fileToWrite = File("export.txt")
             fileToWrite.writeText("$xSize $ySize 1 ")
+            var stringer = ""
             //fileToWrite.appendText("\n")
             for (i in 0..previousStepArray.size - 1) {
                 for (j in 0..previousStepArray.size - 1) {
-                    fileToWrite.appendText("$i $j 0 ")
-                    var previousArrayImage = previousStepArray[i][j]
-                    fileToWrite.appendText(previousArrayImage.toString())
-                    //fileToWrite.appendText(" \n")
-                    fileToWrite.appendText(" ")
+                    stringer+="$i $j 0 ${previousStepArray[i][j]} "
+                   // fileToWrite.appendText("$i $j 0 ${previousStepArray[i][j]} \n")
+                   // var previousArrayImage = previousStepArray[i][j]
+                  //  fileToWrite.appendText(previousArrayImage.toString())
 
+                    //fileToWrite.appendText(" ")
+                    //fileToWrite.appendText(" \n")
                 }
             }
+            fileToWrite.appendText(stringer)
+
         }
 
         fun writeFromFile(){
@@ -160,22 +165,15 @@ class Utils{
             var inputList = inputString.split(" ")
             var xSize = inputList[0]
             var ySize = inputList[1]
-            var bufferList = inputList.subList(4,inputList.size)
-            var previousStepArray = Array(xSize.toInt(), {Array(ySize.toInt(),{0})})
+            var bufferList = inputList.subList(3,inputList.size)
+            var testArray = Array(xSize.toInt(), {Array(ySize.toInt(),{0})})
 
-            for(x in 0..bufferList.size){
+             for(x in 0..bufferList.size-5){
                 if(x%4==0) {
-                    var raz = bufferList[x]
-                    var dwa = bufferList[x+2]
-                    var trzy = bufferList[x+3]
-                    previousStepArray[bufferList[x].toInt()][bufferList[x + 1].toInt()] = bufferList[x + 3].toInt()
+                    testArray[bufferList[x].toInt()][bufferList[x + 1].toInt()] = bufferList[x + 3].toInt()
                 }
             }
-          /**  for (i in 0..previousStepArray.size - 1) {
-                for (j in 0..previousStepArray.size - 1) {
-                   println(previousStepArray[i][j])
-                }
-            }**/
+            engineController.setArray(testArray)
         }
 
 
