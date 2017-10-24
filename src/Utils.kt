@@ -141,13 +141,15 @@ class Utils{
         fun saveToFile(xSize: Int, ySize: Int, previousStepArray: Array<Array<Int>>){
             val fileToWrite = File("export.txt")
             fileToWrite.writeText("$xSize $ySize 1 ")
-            fileToWrite.appendText("\n")
+            //fileToWrite.appendText("\n")
             for (i in 0..previousStepArray.size - 1) {
                 for (j in 0..previousStepArray.size - 1) {
                     fileToWrite.appendText("$i $j 0 ")
                     var previousArrayImage = previousStepArray[i][j]
                     fileToWrite.appendText(previousArrayImage.toString())
-                    fileToWrite.appendText("\n")
+                    //fileToWrite.appendText(" \n")
+                    fileToWrite.appendText(" ")
+
                 }
             }
         }
@@ -156,10 +158,24 @@ class Utils{
             val inputStream: InputStream = File("export.txt").inputStream()
             val inputString = inputStream.bufferedReader().use { it.readText() }
             var inputList = inputString.split(" ")
-            for(x in inputList){
+            var xSize = inputList[0]
+            var ySize = inputList[1]
+            var bufferList = inputList.subList(4,inputList.size)
+            var previousStepArray = Array(xSize.toInt(), {Array(ySize.toInt(),{0})})
 
+            for(x in 0..bufferList.size){
+                if(x%4==0) {
+                    var raz = bufferList[x]
+                    var dwa = bufferList[x+2]
+                    var trzy = bufferList[x+3]
+                    previousStepArray[bufferList[x].toInt()][bufferList[x + 1].toInt()] = bufferList[x + 3].toInt()
+                }
             }
-            println(inputString)
+          /**  for (i in 0..previousStepArray.size - 1) {
+                for (j in 0..previousStepArray.size - 1) {
+                   println(previousStepArray[i][j])
+                }
+            }**/
         }
 
 

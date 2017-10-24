@@ -15,7 +15,7 @@ class MyView: View() {
     val model = UserModel(User())
 
     init {
-        model.image = engineController.runSimulation(5,5,1).toProperty()
+
         reloadViewsOnFocus()
         importStylesheet(Styles::class)
         with (root) {
@@ -71,8 +71,7 @@ class MyView: View() {
             }
             button("Import") {
                 action {
-                    //openInternalWindow(NextView::class)
-
+                   chooseFile("yes")
                     println("Imported")
                 }
                     runAsync {
@@ -82,11 +81,17 @@ class MyView: View() {
                 }
             }
             form {
-                runAsync{
-                    println(model.image.value)
-                    imageview(model.image.value) {
-                        scaleX = 1.0
-                        scaleY = 1.0
+                button("show result"){
+                    action {
+                        vbox {
+                            imageview(model.image.value) {
+                                useMaxWidth = true
+
+                                scaleX = 1.0
+                                scaleY = 1.0
+
+                            }
+                        }
                     }
                 }
             }
