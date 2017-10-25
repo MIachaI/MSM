@@ -26,10 +26,10 @@ class User {
 }
 class UserModel(var integersSet: User) : ViewModel(){
     var xSize = bind { integersSet.xSizeProperty }
-    val ySize = bind { integersSet.ySizeProperty }
-    val nucleonsNumber = bind { integersSet.nucleonsNumberProperty }
-    val inclusionsNumber = bind { integersSet.inclusionsNumberProperty }
-    val inclusionsSize = bind { integersSet.inclusionsSizeProperty }
+    var ySize = bind { integersSet.ySizeProperty }
+    var nucleonsNumber = bind { integersSet.nucleonsNumberProperty }
+    var inclusionsNumber = bind { integersSet.inclusionsNumberProperty }
+    var inclusionsSize = bind { integersSet.inclusionsSizeProperty }
     var image = bind { integersSet.imageProperty }
     var array = bind {integersSet.arrayToWorkOn}
     var arrayOfColors = bind {integersSet.arrayOfColors}

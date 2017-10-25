@@ -50,7 +50,7 @@ class MyView: View() {
                 action {
                     runAsync {
                         println(engineController.getArray())
-                        Utils.saveToFile(model.xSize.value.toInt(),model.ySize.value.toInt(),engineController.getArray())
+                        Utils.saveToFile(engineController.getModelxSize(),engineController.getModelySize(),engineController.getArray())
                         println("Exported")
                     } ui { loadedText ->
 
@@ -61,7 +61,7 @@ class MyView: View() {
                 action {
                     Utils.writeFromFile()
                     println("Imported")
-                    engineController.setModelImage(Drawing.drawArray(engineController.getModelSize(),engineController.getModelSize(), engineController.getArray(), engineController.getModelColorArray(),"0"))
+                    engineController.setModelImage(Drawing.drawArray(engineController.getModelxSize(),engineController.getModelySize(), engineController.getArray(), engineController.getModelColorArray(),"0"))
                 }
                     runAsync {
                     } ui { loadedText ->

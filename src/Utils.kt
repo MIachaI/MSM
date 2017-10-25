@@ -66,6 +66,8 @@ class Utils{
             return arrayToBeSet
         }
 
+
+
         /**
          * This function is main engine to simulate gran growth. It requiers sizes, both x and y, and two arrays
          * on which simulation will proceed
@@ -75,10 +77,8 @@ class Utils{
          * @param nextStepArray         Two dimensional array to update changes between previous and next step in real time
          */
         fun grainGrow(xSize: Int, ySize: Int, previousStepArray: Array<Array<Int>>, nextStepArray: Array<Array<Int>>, colorSet: Array<Int>){
-            var name = 0
             while (true) {
-
-                var buffer = 0;
+                var buffer = 0
                 for (i in 1..xSize - 2) {
                     for (j in 1..ySize - 2) {
                         if (previousStepArray[i][j] == 0) {
@@ -104,10 +104,6 @@ class Utils{
                         }
                     }
                 }
-
-                //Drawing.drawArray(xSize,ySize,previousStepArray,colorSet,name.toString())
-                name++
-
                     if(buffer==0) return
 
                     for (i in 0..xSize - 1) {
@@ -163,11 +159,10 @@ class Utils{
             val inputStream: InputStream = File("export.txt").inputStream()
             val inputString = inputStream.bufferedReader().use { it.readText() }
             var inputList = inputString.split(" ")
-            var xSize = inputList[0]
-            var ySize = inputList[1]
-            engineController.setModelSize(xSize.toInt())
+            engineController.setModelxSize(inputList[0].toInt())
+            engineController.setModelySize(inputList[1].toInt())
             var bufferList = inputList.subList(3,inputList.size)
-            var testArray = Array(xSize.toInt(), {Array(ySize.toInt(),{0})})
+            var testArray = Array(engineController.getModelxSize(), {Array(engineController.getModelySize(),{0})})
 
              for(x in 0..bufferList.size-5){
                 if(x%4==0) {
