@@ -4,19 +4,17 @@ import app.User
 import app.UserModel
 import app.Styles.Companion.simulate
 import controller.engineController
-import javafx.stage.FileChooser
 import tornadofx.*
 
 
 
 class MyApp: App(MyView::class)
 class MyView: View() {
-    object CustomerListRequest : FXEvent(EventBus.RunOn.BackgroundThread)
     override val root = Form().addClass(simulate)
     val model = UserModel(User())
 
     init {
-
+        engineController.setModelColorArray(Drawing.setColors(1000))
         reloadViewsOnFocus()
         importStylesheet(Styles::class)
         with (root) {
@@ -63,7 +61,7 @@ class MyView: View() {
                 action {
                     Utils.writeFromFile()
                     println("Imported")
-                    Utils.printArray(engineController.getArray())
+                    engineController.setModelImage(Drawing.drawArray(engineController.getModelSize(),engineController.getModelSize(), engineController.getArray(), engineController.getModelColorArray(),"0"))
                 }
                     runAsync {
                     } ui { loadedText ->
@@ -74,7 +72,7 @@ class MyView: View() {
             button("Simulate") {
                 action {
                     runAsync {
-                        model.image = engineController.runSimulation(model.xSize.value.toInt(),model.ySize.value.toInt(), model.nucleonsNumber.value.toInt()).toProperty()
+                        engineController.runSimulation(model.xSize.value.toInt(),model.ySize.value.toInt(), model.nucleonsNumber.value.toInt()).toProperty()
                         println("done")
                     } ui { loadedText ->
 
@@ -85,7 +83,7 @@ class MyView: View() {
                 button("show result"){
                     action {
                         vbox {
-                            imageview(model.image.value) {
+                            imageview(engineController.getModelImage()) {
                                 useMaxWidth = true
 
                                 scaleX = 1.0

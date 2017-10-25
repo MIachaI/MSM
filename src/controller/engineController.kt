@@ -29,6 +29,18 @@ class engineController : Controller(){
             model.array = arrayModel.toProperty()
         }
 
+        fun getModelColorArray(): Array<Int>{
+           return model.arrayOfColors.value
+        }
+        fun setModelColorArray(arrayToSet: Array<Int>){
+            model.arrayOfColors = arrayToSet.toProperty()
+        }
+        fun setModelImage(imageToSet: WritableImage){
+            model.image = imageToSet.toProperty()
+        }
+        fun getModelImage(): WritableImage{
+            return model.image.value
+        }
 
 
         fun runSimulation(xSize: Int, ySize: Int, nucleonsNumber: Int): WritableImage {
@@ -37,10 +49,11 @@ class engineController : Controller(){
             var nextStepArray = Array(xSize, { Array(ySize, { 0 }) })
 
             Utils.setGrainsInArray(nucleonsNumber, xSize, previousStepArray)
-            var colorSet = Drawing.setColors(nucleonsNumber)
-            Utils.grainGrow(xSize, ySize, previousStepArray, nextStepArray, colorSet)
-            var dupa = Drawing.drawArray(xSize, ySize, previousStepArray, colorSet, "0")
+            setModelColorArray(Drawing.setColors(nucleonsNumber))
+            Utils.grainGrow(xSize, ySize, previousStepArray, nextStepArray, getModelColorArray())
+            var dupa = Drawing.drawArray(xSize, ySize, previousStepArray, getModelColorArray(), "0")
             setArray(previousStepArray)
+            setModelImage(dupa)
             return dupa
 
         }

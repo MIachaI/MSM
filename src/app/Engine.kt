@@ -22,6 +22,7 @@ class User {
     val inclusionsSizeProperty = SimpleIntegerProperty()
     var imageProperty = SimpleObjectProperty<WritableImage>()
     var arrayToWorkOn = SimpleObjectProperty<Array<Array<Int>>>()
+    var arrayOfColors = SimpleObjectProperty<Array<Int>>()
 }
 class UserModel(var integersSet: User) : ViewModel(){
     var xSize = bind { integersSet.xSizeProperty }
@@ -31,6 +32,7 @@ class UserModel(var integersSet: User) : ViewModel(){
     val inclusionsSize = bind { integersSet.inclusionsSizeProperty }
     var image = bind { integersSet.imageProperty }
     var array = bind {integersSet.arrayToWorkOn}
+    var arrayOfColors = bind {integersSet.arrayOfColors}
 
 
 

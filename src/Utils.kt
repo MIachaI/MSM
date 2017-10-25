@@ -165,6 +165,7 @@ class Utils{
             var inputList = inputString.split(" ")
             var xSize = inputList[0]
             var ySize = inputList[1]
+            engineController.setModelSize(xSize.toInt())
             var bufferList = inputList.subList(3,inputList.size)
             var testArray = Array(xSize.toInt(), {Array(ySize.toInt(),{0})})
 
