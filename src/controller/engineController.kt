@@ -5,6 +5,8 @@ import app.UserModel
 import javafx.scene.image.WritableImage
 import tornadofx.Controller
 import tornadofx.toProperty
+import app.Cell
+
 
 /**
  * Created by MIachaI on 19.10.2017.
@@ -84,6 +86,9 @@ class engineController : Controller(){
             Utils.grainGrow(getModelxSize(), getModelySize(), previousStepArray, nextStepArray)
             var dupa = Drawing.drawArray()
             setModelImage(dupa)
+
+            var train = Array(10, { Array(10, { Cell(10, 20, "supa", 2) }) })
+            train[0][0] = Cell(20, 20, "supa", 2)
             return dupa
         }
 

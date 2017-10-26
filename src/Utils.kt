@@ -41,22 +41,28 @@ class Utils{
             val random = Random()
             var betaArray = engineController.getArray()
             while (iterator <= engineController.getInclusionsNumber()) {
+                try {
+                    var xSize = random.nextInt(engineController.getModelxSize() - 2) + 1
+                    var ySize = random.nextInt(engineController.getModelySize() - 2) + 1
+                    while (betaArray[xSize][ySize] == 0)
+                        for (i in 0..engineController.getInclusionsSize()) {
+                            for (j in 0..engineController.getInclusionsSize()) {
+                                betaArray[xSize + i][ySize + j] = -1
+                            }
 
-                var xSize = random.nextInt(engineController.getModelxSize() - 2) + 1
-                var ySize = random.nextInt(engineController.getModelySize() - 2) + 1
-                while (betaArray[xSize][ySize] == 0)
-                    for(i in 0..engineController.getInclusionsSize()){
-                        for(j in 0..engineController.getInclusionsSize()){
-                            betaArray[xSize+i][ySize+j] = -1
                         }
-
-                    }
 
                     iterator++
                 }
+                catch (e: ArrayIndexOutOfBoundsException){
+                    println("found error")
+                    continue
+                }
 
+            }
             engineController.setArray(betaArray)
             return betaArray
+
         }
 
         fun setCircleInclusionsInArray(inclusions: Int, inclusionRadius: Int, arrayToBeSet: Array<Array<Int>>, arraySize: Int): Array<Array<Int>>{
