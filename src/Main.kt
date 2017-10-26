@@ -22,7 +22,7 @@ fun main (args : Array<String>){
         println("There are more grains than cells! Program will not proceed.")
         return
     }
-    Utils.setGrainsInArray(grains,arraySize,previousStepArray)
+    Utils.setGrainsInArray(grains,previousStepArray)
 
     for (i in 0..arraySize-1){
         for (j in 0..arraySize-1){
@@ -31,12 +31,12 @@ fun main (args : Array<String>){
     }
     var colorSet = Drawing.setColors(grains)
     //Utils.printArray(nextStepArray)
-    Utils.grainGrow(arraySize,arraySize,previousStepArray,nextStepArray, colorSet)
+    Utils.grainGrow(arraySize,arraySize,previousStepArray, nextStepArray)
     //Utils.printArray(previousStepArray)
-    Utils.saveToFile(arraySize,arraySize,previousStepArray)
+    Utils.saveToFile()
     Utils.writeFromFile()
 
-    Drawing.drawArray(arraySize,arraySize,previousStepArray, colorSet, "output")
+    Drawing.drawArray()
 
 
     }

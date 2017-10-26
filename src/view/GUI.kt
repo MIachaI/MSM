@@ -4,6 +4,7 @@ import app.User
 import app.UserModel
 import app.Styles.Companion.simulate
 import controller.engineController
+import javafx.stage.FileChooser
 import tornadofx.*
 
 
@@ -40,17 +41,51 @@ class MyView: View() {
                     textfield(model.nucleonsNumber).required()
                 }
 
-                field("Inclusions") {
+                field("Inclusions Number") {
+                    textfield(model.inclusionsNumber).required()
+                }
+                field("Inclusions Size") {
                     textfield(model.inclusionsSize).required()
                 }
             }
 
+            button("Set Nucleons") {
+                action {
+
+                    engineController.setArray(Array(model.xSize.value.toInt(), { Array(model.ySize.value.toInt(), { 0 }) }))
+                    engineController.setModelxSize(model.xSize.value.toInt())
+                    engineController.setModelySize(model.ySize.value.toInt())
+
+                    Utils.setGrainsInArray(model.nucleonsNumber.value.toInt(), engineController.getArray())
+                    engineController.setModelImage(Drawing.drawArray())
+                    println("Nucelons set")
+                }
+            }
+
+            button("Set Inclusions") {
+                action {
+
+                        engineController.setArray(Array(model.xSize.value.toInt(), { Array(model.ySize.value.toInt(), { 0 }) }))
+                        engineController.setModelxSize(model.xSize.value.toInt())
+                        engineController.setModelySize(model.ySize.value.toInt())
+                        engineController.setInclusionsNumber(model.inclusionsNumber.value.toInt())
+                        engineController.setInclusionsSize(model.inclusionsSize.value.toInt())
+                        Utils.setDiagonalInclusionsBefore()
+                        Utils.setGrainsInArray(model.nucleonsNumber.value.toInt(), engineController.getArray())
+                        Utils.grainGrow(engineController.getModelxSize(), engineController.getModelySize(), engineController.getArray(), engineController.getNextArray())
+                        engineController.setModelImage(Drawing.drawArray())
+                        runAsync {
+                    } ui { loadedText ->
+
+                    }
+                }
+            }
 
             button("Export") {
                 action {
                     runAsync {
                         println(engineController.getArray())
-                        Utils.saveToFile(engineController.getModelxSize(),engineController.getModelySize(),engineController.getArray())
+                        Utils.saveToFile()
                         println("Exported")
                     } ui { loadedText ->
 
@@ -61,7 +96,7 @@ class MyView: View() {
                 action {
                     Utils.writeFromFile()
                     println("Imported")
-                    engineController.setModelImage(Drawing.drawArray(engineController.getModelxSize(),engineController.getModelySize(), engineController.getArray(), engineController.getModelColorArray(),"0"))
+                    engineController.setModelImage(Drawing.drawArray())
                 }
                     runAsync {
                     } ui { loadedText ->
@@ -71,9 +106,10 @@ class MyView: View() {
             }
             button("Simulate") {
                 action {
+                    engineController.runSimulation(model.xSize.value.toInt(),model.ySize.value.toInt(), model.nucleonsNumber.value.toInt()).toProperty()
+                    println("done")
                     runAsync {
-                        engineController.runSimulation(model.xSize.value.toInt(),model.ySize.value.toInt(), model.nucleonsNumber.value.toInt()).toProperty()
-                        println("done")
+
                     } ui { loadedText ->
 
                     }

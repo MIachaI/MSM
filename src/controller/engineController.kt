@@ -15,16 +15,11 @@ class engineController : Controller(){
 
     companion object {
         val model = UserModel(User())
-        fun getModelxSize(): Int{
-            return model.xSize.value.toInt()
-        }
-        fun setModelxSize(sizesize: Int){
-            model.xSize = sizesize.toProperty()
-        }
+        fun getModelxSize() = model.xSize.value.toInt()
+        fun setModelxSize(sizesize: Int){model.xSize = sizesize.toProperty()}
 
-        fun getModelySize(): Int{
-            return model.ySize.value.toInt()
-        }
+        fun getModelySize() =model.ySize.value.toInt()
+
         fun setModelySize(sizesize: Int){
             model.ySize = sizesize.toProperty()
         }
@@ -32,7 +27,14 @@ class engineController : Controller(){
         fun getArray(): Array<Array<Int>>{
             return model.array.value
         }
-        fun setArray(arrayModel: Array<Array<Int>>){
+        fun setArray(arrayModel: Array<Array<Int>>) {
+            model.array = arrayModel.toProperty()
+        }
+
+        fun getNextArray(): Array<Array<Int>>{
+            return model.array.value
+        }
+        fun setNextArray(arrayModel: Array<Array<Int>>){
             model.array = arrayModel.toProperty()
         }
         fun getNucleonsNumber(): Int{
@@ -40,6 +42,19 @@ class engineController : Controller(){
         }
         fun setNucleonsNumber(numberToSet: Int){
             model.nucleonsNumber = numberToSet.toProperty()
+        }
+        fun getInclusionsNumber(): Int{
+            return model.inclusionsNumber.value.toInt()
+        }
+        fun setInclusionsNumber(numberToSet: Int){
+            model.inclusionsNumber = numberToSet.toProperty()
+        }
+
+        fun getInclusionsSize(): Int{
+            return model.inclusionsSize.value.toInt()
+        }
+        fun setInclusionsSize(SizeToSet: Int){
+            model.inclusionsSize = SizeToSet.toProperty()
         }
 
         fun getModelColorArray(): Array<Int>{
@@ -62,15 +77,19 @@ class engineController : Controller(){
             setNucleonsNumber(nucleonsNumber)
             var previousStepArray = Array(xSize, { Array(ySize, { 0 }) })
             var nextStepArray = Array(xSize, { Array(ySize, { 0 }) })
-
-            Utils.setGrainsInArray(nucleonsNumber, xSize, previousStepArray)
-            setModelColorArray(Drawing.setColors(nucleonsNumber))
-            Utils.grainGrow(xSize, ySize, previousStepArray, nextStepArray, getModelColorArray())
-            var dupa = Drawing.drawArray(getModelxSize(), getModelySize(), previousStepArray, getModelColorArray(), "0")
             setArray(previousStepArray)
+            setNextArray(nextStepArray)
+            Utils.setGrainsInArray(nucleonsNumber, previousStepArray)
+            setModelColorArray(Drawing.setColors(nucleonsNumber))
+            Utils.grainGrow(getModelxSize(), getModelySize(), previousStepArray, nextStepArray)
+            var dupa = Drawing.drawArray()
             setModelImage(dupa)
             return dupa
+        }
+
+        fun setNucleonsInArray(){
 
         }
+
     }
 }

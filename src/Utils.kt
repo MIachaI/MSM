@@ -21,13 +21,13 @@ class Utils{
          * @param arraySize             Basically in v1.0 xSize and ySize are the same - the arraySize
          * @param previousStepArray     Two dimensional array on which we will generate grains
          */
-        fun setGrainsInArray(grains: Int, arraySize: Int, previousStepArray: Array<Array<Int>>): Array<Array<Int>>{
+        fun setGrainsInArray(grains: Int, previousStepArray: Array<Array<Int>>): Array<Array<Int>>{
             var iterator=1
             val random = Random()
             while(iterator <= grains) {
 
-                var xSize = random.nextInt(arraySize-2)+1
-                var ySize = random.nextInt(arraySize-2)+1
+                var xSize = random.nextInt(engineController.getModelxSize()-2)+1
+                var ySize = random.nextInt(engineController.getModelySize()-2)+1
                 while (previousStepArray[xSize][ySize] == 0) {
                     previousStepArray[xSize][ySize] = iterator
                     iterator++
@@ -36,19 +36,27 @@ class Utils{
             return previousStepArray
         }
 
-        fun setDiagonalInclusionsInArray(inclusions: Int, inclusionSize: Int, arrayToBeSet: Array<Array<Int>>, arraySize: Int): Array<Array<Int>>{
-            var iterator=1
+        fun setDiagonalInclusionsBefore(): Array<Array<Int>> {
+            var iterator = 1
             val random = Random()
-            while(iterator <= inclusions) {
+            var betaArray = engineController.getArray()
+            while (iterator <= engineController.getInclusionsNumber()) {
 
-                var xSize = random.nextInt(arraySize-2*inclusionSize)+inclusionSize
-                var ySize = random.nextInt(arraySize-2*inclusionSize)+inclusionSize
-                while (arrayToBeSet[xSize][ySize] == 0) {
-                    arrayToBeSet[xSize][ySize] = -1
+                var xSize = random.nextInt(engineController.getModelxSize() - 2) + 1
+                var ySize = random.nextInt(engineController.getModelySize() - 2) + 1
+                while (betaArray[xSize][ySize] == 0)
+                    for(i in 0..engineController.getInclusionsSize()){
+                        for(j in 0..engineController.getInclusionsSize()){
+                            betaArray[xSize+i][ySize+j] = -1
+                        }
+
+                    }
+
                     iterator++
                 }
-            }
-            return arrayToBeSet
+
+            engineController.setArray(betaArray)
+            return betaArray
         }
 
         fun setCircleInclusionsInArray(inclusions: Int, inclusionRadius: Int, arrayToBeSet: Array<Array<Int>>, arraySize: Int): Array<Array<Int>>{
@@ -76,7 +84,8 @@ class Utils{
          * @param previousStepArray     Two dimensional array to compare certain cells
          * @param nextStepArray         Two dimensional array to update changes between previous and next step in real time
          */
-        fun grainGrow(xSize: Int, ySize: Int, previousStepArray: Array<Array<Int>>, nextStepArray: Array<Array<Int>>, colorSet: Array<Int>){
+        fun grainGrow(xSize: Int, ySize: Int, previousStepArray: Array<Array<Int>>, nextStepArray: Array<Array<Int>>){
+
             while (true) {
                 var buffer = 0
                 for (i in 1..xSize - 2) {
@@ -135,20 +144,13 @@ class Utils{
          * @param ySize                     In v1.0 is the same as arraySize
          * @param previousStepArray         Two dimensional array to save
          */
-        fun saveToFile(xSize: Int, ySize: Int, previousStepArray: Array<Array<Int>>){
+        fun saveToFile(){
             val fileToWrite = File("export.txt")
-            fileToWrite.writeText("$xSize $ySize 1 ")
+            fileToWrite.writeText("${engineController.getModelxSize()} ${engineController.getModelySize()} 1 ")
             var stringer = ""
-            //fileToWrite.appendText("\n")
-            for (i in 0..previousStepArray.size - 1) {
-                for (j in 0..previousStepArray.size - 1) {
-                    stringer+="$i $j 0 ${previousStepArray[i][j]} "
-                   // fileToWrite.appendText("$i $j 0 ${previousStepArray[i][j]} \n")
-                   // var previousArrayImage = previousStepArray[i][j]
-                  //  fileToWrite.appendText(previousArrayImage.toString())
-
-                    //fileToWrite.appendText(" ")
-                    //fileToWrite.appendText(" \n")
+            for (i in 0..engineController.getModelxSize() - 1) {
+                for (j in 0..engineController.getModelySize() - 1) {
+                    stringer+="$i $j 0 ${engineController.getArray()[i][j]} "
                 }
             }
             fileToWrite.appendText(stringer)

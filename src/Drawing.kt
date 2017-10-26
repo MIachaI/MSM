@@ -1,5 +1,6 @@
 import app.User
 import app.UserModel
+import controller.engineController
 import javafx.beans.property.SimpleObjectProperty
 import java.awt.image.BufferedImage
 import java.io.File
@@ -33,6 +34,7 @@ class Drawing {
                 var pixel = alpha shl 24 or (red shl 16) or (green shl 8) or blue
                 arrayOfColors[i]=pixel
             }
+            arrayOfColors[0] = 255 shl 24 or (255 shl 16) or (255 shl 8) or 255
             return arrayOfColors
         }
 
@@ -44,18 +46,20 @@ class Drawing {
          * @param arrayToDraw                   An array we are going to draw via the BufferedImage method
          * @param arrayOfColors                 An array of colors bonded to certain grains (nucleons)
          */
-        fun drawArray(xSize: Int, ySize: Int, arrayToDraw: Array<Array<Int>>, arrayOfColors: Array<Int>, fileName: String): WritableImage {
-            var img =  BufferedImage(xSize, ySize, BufferedImage.TYPE_INT_RGB)
+        fun drawArray(): WritableImage {
+            var img =  BufferedImage(engineController.getModelxSize(), engineController.getModelySize(), BufferedImage.TYPE_INT_RGB)
             var fileToSave: File
-            for (i in 1..arrayToDraw.size - 2) {
-                for (j in 1..arrayToDraw.size - 2) {
-                    if(arrayToDraw[i][j]==-1)img.setRGB(i,j,0)
-                    img.setRGB(i,j,arrayOfColors[arrayToDraw[i][j]])
+            for (i in 1..engineController.getModelxSize() - 2) {
+                for (j in 1..engineController.getModelySize() - 2) {
+                    if(engineController.getArray()[i][j]==-1){img.setRGB(i,j,0)}
+                    else {
+                        img.setRGB(i, j, engineController.getModelColorArray()[engineController.getArray()[i][j]])
+                    }
                 }
             }
             try {
-                fileToSave = File("src/0.jpg")
-                ImageIO.write(img, "jpg", fileToSave)
+                fileToSave = File("src/exportedImage.bmp")
+                ImageIO.write(img, "bmp", fileToSave)
             } catch (e: IOException) {
                 println("Error: " + e)
             }
@@ -63,8 +67,5 @@ class Drawing {
             return image
         }
 
-        fun drawArrayfromImport(path: String){
-
-        }
     }
 }
