@@ -21,7 +21,7 @@ class User {
     val inclusionsNumberProperty = SimpleIntegerProperty()
     val inclusionsSizeProperty = SimpleIntegerProperty()
     var imageProperty = SimpleObjectProperty<WritableImage>()
-    var arrayToWorkOn = SimpleObjectProperty<Array<Array<Int>>>()
+    var arrayToWorkOn = SimpleObjectProperty<Array<Array<Cell>>>()
     var arrayOfColors = SimpleObjectProperty<Array<Int>>()
 }
 class UserModel(var integersSet: User) : ViewModel(){

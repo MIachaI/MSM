@@ -6,6 +6,7 @@ import app.Styles.Companion.simulate
 import controller.engineController
 import javafx.stage.FileChooser
 import tornadofx.*
+import app.Cell
 
 
 
@@ -52,7 +53,7 @@ class MyView: View() {
             button("Set Nucleons") {
                 action {
 
-                    engineController.setArray(Array(model.xSize.value.toInt(), { Array(model.ySize.value.toInt(), { 0 }) }))
+                    engineController.setArray(Array(model.xSize.value.toInt(), { Array(model.ySize.value.toInt(), { Cell(0, 0, "empty", "empty", 0, false) }) }))
                     engineController.setModelxSize(model.xSize.value.toInt())
                     engineController.setModelySize(model.ySize.value.toInt())
 
@@ -65,14 +66,14 @@ class MyView: View() {
             button("Set Inclusions") {
                 action {
 
-                        engineController.setArray(Array(model.xSize.value.toInt(), { Array(model.ySize.value.toInt(), { 0 }) }))
+                        engineController.setArray(Array(model.xSize.value.toInt(), { Array(model.ySize.value.toInt(), { Cell(0, 0, "empty", "empty", 0, false) }) }))
                         engineController.setModelxSize(model.xSize.value.toInt())
                         engineController.setModelySize(model.ySize.value.toInt())
                         engineController.setInclusionsNumber(model.inclusionsNumber.value.toInt())
                         engineController.setInclusionsSize(model.inclusionsSize.value.toInt())
                         Utils.setDiagonalInclusionsBefore()
                         Utils.setGrainsInArray(model.nucleonsNumber.value.toInt(), engineController.getArray())
-                        Utils.grainGrow(engineController.getModelxSize(), engineController.getModelySize(), engineController.getArray(), engineController.getNextArray())
+                        Utils.grainGrow(engineController.getModelxSize(), engineController.getModelySize(), engineController.getArray())
                         engineController.setModelImage(Drawing.drawArray())
                         runAsync {
                     } ui { loadedText ->

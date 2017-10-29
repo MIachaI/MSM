@@ -26,19 +26,13 @@ class engineController : Controller(){
             model.ySize = sizesize.toProperty()
         }
 
-        fun getArray(): Array<Array<Int>>{
+        fun getArray(): Array<Array<Cell>>{
             return model.array.value
         }
-        fun setArray(arrayModel: Array<Array<Int>>) {
+        fun setArray(arrayModel: Array<Array<Cell>>) {
             model.array = arrayModel.toProperty()
         }
 
-        fun getNextArray(): Array<Array<Int>>{
-            return model.array.value
-        }
-        fun setNextArray(arrayModel: Array<Array<Int>>){
-            model.array = arrayModel.toProperty()
-        }
         fun getNucleonsNumber(): Int{
             return model.nucleonsNumber.value.toInt()
         }
@@ -77,24 +71,17 @@ class engineController : Controller(){
             setModelxSize(xSize)
             setModelySize(ySize)
             setNucleonsNumber(nucleonsNumber)
-            var previousStepArray = Array(xSize, { Array(ySize, { 0 }) })
-            var nextStepArray = Array(xSize, { Array(ySize, { 0 }) })
+            var previousStepArray = Array(xSize, { Array(ySize, { Cell(0,0,"empty","empty",0,false) }) })
             setArray(previousStepArray)
-            setNextArray(nextStepArray)
             Utils.setGrainsInArray(nucleonsNumber, previousStepArray)
             setModelColorArray(Drawing.setColors(nucleonsNumber))
-            Utils.grainGrow(getModelxSize(), getModelySize(), previousStepArray, nextStepArray)
-            var dupa = Drawing.drawArray()
-            setModelImage(dupa)
-
-            var train = Array(10, { Array(10, { Cell(10, 20, "supa", 2) }) })
-            train[0][0] = Cell(20, 20, "supa", 2)
-            return dupa
+            Utils.grainGrow(getModelxSize(), getModelySize(), previousStepArray)
+            var imageToDisplay = Drawing.drawArray()
+            setModelImage(imageToDisplay)
+            return imageToDisplay
         }
 
-        fun setNucleonsInArray(){
 
-        }
 
     }
 }

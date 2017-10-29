@@ -39,6 +39,11 @@ class Drawing {
         }
 
 
+        fun putColorsIntoCellObject(){
+            engineController.getArray()
+
+        }
+
         /**
          * Uses BufferedImage method to translate array of simulated grains growth into image, in this case - in jpg format
          * @param xSize                         In v1.0 is the same as arraySize
@@ -51,9 +56,11 @@ class Drawing {
             var fileToSave: File
             for (i in 1..engineController.getModelxSize() - 2) {
                 for (j in 1..engineController.getModelySize() - 2) {
-                    if(engineController.getArray()[i][j]==-1){img.setRGB(i,j,0)}
-                    else {
-                        img.setRGB(i, j, engineController.getModelColorArray()[engineController.getArray()[i][j]])
+                    if(engineController.getArray()[i][j].cellState.equals("inclusion")){img.setRGB(i,j,0)}
+                    else if (engineController.getArray()[i][j].cellState.equals("empty")!=true)
+                    {
+                        engineController.getArray()[i][j].color = engineController.getModelColorArray()[engineController.getArray()[i][j].cellState.toInt()]
+                        img.setRGB(i, j, engineController.getArray()[i][j].color)
                     }
                 }
             }
