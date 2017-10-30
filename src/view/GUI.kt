@@ -56,9 +56,7 @@ class MyView: View() {
                     engineController.setArray(Array(model.xSize.value.toInt(), { Array(model.ySize.value.toInt(), { Cell(0, 0, "empty", "empty", 0, false) }) }))
                     engineController.setModelxSize(model.xSize.value.toInt())
                     engineController.setModelySize(model.ySize.value.toInt())
-
                     Utils.setGrainsInArray(model.nucleonsNumber.value.toInt(), engineController.getArray())
-                    engineController.setModelImage(Drawing.drawArray())
                     println("Nucelons set")
                 }
             }
@@ -71,10 +69,10 @@ class MyView: View() {
                         engineController.setModelySize(model.ySize.value.toInt())
                         engineController.setInclusionsNumber(model.inclusionsNumber.value.toInt())
                         engineController.setInclusionsSize(model.inclusionsSize.value.toInt())
-                        Utils.setDiagonalInclusionsBefore()
+                        Utils.setCircleInclusionsInArray()
                         Utils.setGrainsInArray(model.nucleonsNumber.value.toInt(), engineController.getArray())
                         Utils.grainGrow(engineController.getModelxSize(), engineController.getModelySize(), engineController.getArray())
-                        engineController.setModelImage(Drawing.drawArray())
+
                         runAsync {
                     } ui { loadedText ->
 
@@ -117,6 +115,12 @@ class MyView: View() {
                 }
             }
             form {
+                button("show result"){
+                    action {
+                        engineController.setModelImage(Drawing.drawArray())
+                    }
+                }
+
                 button("show result"){
                     action {
                         vbox {

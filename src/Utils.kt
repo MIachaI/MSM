@@ -67,20 +67,23 @@ class Utils{
 
         }
 
-        fun setCircleInclusionsInArray(inclusions: Int, inclusionRadius: Int, arrayToBeSet: Array<Array<Cell>>, arraySize: Int): Array<Array<Cell>>{
+        fun setCircleInclusionsInArray(): Array<Array<Cell>>{
             var iterator=1
             val random = Random()
-            while(iterator <= inclusions) {
+            var betaArray = engineController.getArray()
+            while(iterator <= engineController.getInclusionsNumber()) {
 
-                var xSize = random.nextInt(arraySize-2)+1
-                var ySize = random.nextInt(arraySize-2)+1
-                while (arrayToBeSet[xSize][ySize].cellState == "empty") {
-                    for (i in -inclusionRadius..inclusionRadius){
-                        for (j in -inclusionRadius..inclusionRadius){
-                            if (i*i + j*j <= inclusionRadius*inclusionRadius + inclusionRadius*0.8){
+                var xSize = random.nextInt(engineController.getModelxSize()-2)+1
+                var ySize = random.nextInt(engineController.getModelySize()-2)+1
+                while (betaArray[xSize][ySize].cellState == "empty") {
+
+                    for (i in -engineController.getInclusionsSize()..engineController.getInclusionsSize()){
+                        for (j in -engineController.getInclusionsSize()..engineController.getInclusionsSize()){
+                            if (i*i + j*j <= engineController.getInclusionsSize()*engineController.getInclusionsSize() + engineController.getInclusionsSize()*0.8){
                                 try {
-                                    arrayToBeSet[xSize + i][ySize + j].cellState = "inclusion"
-                                    iterator++
+                                    betaArray[xSize + i][ySize + j].cellState = "inclusion"
+                                  betaArray[xSize + i][ySize + j].cellPreviousState = "inclusion"
+                                    println("$xSize $ySize")
                                 }
                                 catch (e: ArrayIndexOutOfBoundsException){
                                     println("found error")
@@ -89,11 +92,14 @@ class Utils{
                             }
 
                         }
+
                     }
 
                 }
+                iterator++
             }
-            return arrayToBeSet
+            engineController.setArray(betaArray)
+            return betaArray
         }
 
 
@@ -139,6 +145,7 @@ class Utils{
                     for (j in 1..ySize-2){
                         engineController.getArray()[i][j].cellPreviousState = engineController.getArray()[i][j].cellState
                     }
+                    println(buffer)
                 }
                     if(buffer==0) return
                 }
