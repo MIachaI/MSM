@@ -75,8 +75,22 @@ class Utils{
                 var xSize = random.nextInt(arraySize-2)+1
                 var ySize = random.nextInt(arraySize-2)+1
                 while (arrayToBeSet[xSize][ySize].cellState == "empty") {
-                    arrayToBeSet[xSize][ySize].cellState = "inclusion"
-                    iterator++
+                    for (i in -inclusionRadius..inclusionRadius){
+                        for (j in -inclusionRadius..inclusionRadius){
+                            if (i*i + j*j <= inclusionRadius*inclusionRadius + inclusionRadius*0.8){
+                                try {
+                                    arrayToBeSet[xSize + i][ySize + j].cellState = "inclusion"
+                                    iterator++
+                                }
+                                catch (e: ArrayIndexOutOfBoundsException){
+                                    println("found error")
+                                    continue
+                                }
+                            }
+
+                        }
+                    }
+
                 }
             }
             return arrayToBeSet
