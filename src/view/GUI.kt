@@ -7,13 +7,17 @@ import controller.engineController
 import javafx.stage.FileChooser
 import tornadofx.*
 import app.Cell
-
+import javafx.beans.property.SimpleStringProperty
+import javafx.collections.FXCollections
+import javafx.collections.FXCollections.observableArrayList
 
 
 class MyApp: App(MyView::class)
 class MyView: View() {
     override val root = Form().addClass(simulate)
     val model = UserModel(User())
+    val inclusionType = observableArrayList("Circular before","Circular after","Square before","Square after")
+    val selectedInclusionType = SimpleStringProperty()
 
     init {
         engineController.setModelColorArray(Drawing.setColors(1000))
@@ -44,18 +48,23 @@ class MyView: View() {
 
                 field("Inclusions Number") {
                     textfield(model.inclusionsNumber).required()
+
                 }
+                combobox(selectedInclusionType, values=inclusionType)
                 field("Inclusions Size") {
                     textfield(model.inclusionsSize).required()
                 }
             }
-
-            button("Set Nucleons") {
+            button("Create an array") {
                 action {
-
                     engineController.setArray(Array(model.xSize.value.toInt(), { Array(model.ySize.value.toInt(), { Cell(0, 0, "empty", "empty", 0, false) }) }))
                     engineController.setModelxSize(model.xSize.value.toInt())
                     engineController.setModelySize(model.ySize.value.toInt())
+                    println(255 shl 24 or (255 shl 16) or (255 shl 8) or 255)
+                }
+            }
+            button("Set Nucleons") {
+                action {
                     Utils.setGrainsInArray(model.nucleonsNumber.value.toInt(), engineController.getArray())
                     println("Nucelons set")
                 }
@@ -63,17 +72,22 @@ class MyView: View() {
 
             button("Set Inclusions") {
                 action {
-
-                        engineController.setArray(Array(model.xSize.value.toInt(), { Array(model.ySize.value.toInt(), { Cell(0, 0, "empty", "empty", 0, false) }) }))
-                        engineController.setModelxSize(model.xSize.value.toInt())
-                        engineController.setModelySize(model.ySize.value.toInt())
                         engineController.setInclusionsNumber(model.inclusionsNumber.value.toInt())
                         engineController.setInclusionsSize(model.inclusionsSize.value.toInt())
-                        Utils.setCircleInclusionsInArray()
-                        Utils.setGrainsInArray(model.nucleonsNumber.value.toInt(), engineController.getArray())
-                        Utils.grainGrow(engineController.getModelxSize(), engineController.getModelySize(), engineController.getArray())
+                        if (selectedInclusionType.value.equals("Circular before"))Utils.setCircleInclusionsBefore()
+                        if (selectedInclusionType.value.equals("Square before"))Utils.setDiagonalInclusionsBefore()
+                        if (selectedInclusionType.value.equals("Circular after")){
+                            Utils.cellsAtBoundary()
+                            Utils.setCircleInclusionsAfter()
 
-                        runAsync {
+                        }
+                        if (selectedInclusionType.value.equals("Square after")) {
+                            Utils.cellsAtBoundary()
+                            Utils.setDiagonalInclusionsAfter()
+                        }
+                        }
+
+                    runAsync {
                     } ui { loadedText ->
 
                     }
@@ -105,8 +119,8 @@ class MyView: View() {
             }
             button("Simulate") {
                 action {
-                    engineController.runSimulation(model.xSize.value.toInt(),model.ySize.value.toInt(), model.nucleonsNumber.value.toInt()).toProperty()
-                    println("done")
+                    Utils.grainGrow()
+                    println("Simulation done")
                     runAsync {
 
                     } ui { loadedText ->
@@ -115,7 +129,7 @@ class MyView: View() {
                 }
             }
             form {
-                button("show result"){
+                button("render image"){
                     action {
                         engineController.setModelImage(Drawing.drawArray())
                     }
@@ -149,7 +163,7 @@ class MyView: View() {
 
 
 
-    }
+
 
 class NextApp: App(NextView::class)
 class NextView: View() {

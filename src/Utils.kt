@@ -1,12 +1,9 @@
 import app.Cell
 import controller.engineController
-import java.awt.Color
-import java.awt.image.BufferedImage
 import java.io.File
 import java.io.InputStream
 import java.util.*
-import java.io.IOException
-import javax.imageio.ImageIO
+
 
 
 
@@ -16,12 +13,7 @@ import javax.imageio.ImageIO
 class Utils{
 
     companion object {
-        /**
-         * This function was created to set grains at random places within the simulated area
-         * @param grains                How many grains will grow
-         * @param arraySize             Basically in v1.0 xSize and ySize are the same - the arraySize
-         * @param previousStepArray     Two dimensional array on which we will generate grains
-         */
+
         fun setGrainsInArray(grains: Int, array: Array<Array<Cell>>): Array<Array<Cell>>{
             var iterator=1
             val random = Random()
@@ -38,7 +30,7 @@ class Utils{
             return array
         }
 
-        fun setDiagonalInclusionsBefore(): Array<Array<Cell>> {
+        fun setDiagonalInclusionsBefore() {
             var iterator = 1
             val random = Random()
             var betaArray = engineController.getArray()
@@ -50,24 +42,50 @@ class Utils{
                         for (i in 0..engineController.getInclusionsSize()) {
                             for (j in 0..engineController.getInclusionsSize()) {
                                 betaArray[xSize + i][ySize + j].cellState = "inclusion"
+                                betaArray[xSize + i][ySize + j].cellPreviousState = "inclusion"
                             }
-
                         }
-
                     iterator++
                 }
                 catch (e: ArrayIndexOutOfBoundsException){
                     println("found error")
                     continue
                 }
-
             }
             engineController.setArray(betaArray)
-            return betaArray
+        }
+        fun setDiagonalInclusionsAfter(){
+            var iterator = 1
+            val random = Random()
+            var betaArray = engineController.getArray()
+            while (iterator <= engineController.getInclusionsNumber()) {
+                try {
+                    var xSize = random.nextInt(engineController.getModelxSize() - 2) + 1
+                    var ySize = random.nextInt(engineController.getModelySize() - 2) + 1
+                    if (betaArray[xSize][ySize].isBoundary == true) {
+                        for (i in 0..engineController.getInclusionsSize()) {
+                            for (j in 0..engineController.getInclusionsSize()) {
+                                betaArray[xSize + i][ySize + j].cellState = "inclusion"
+                                betaArray[xSize + i][ySize + j].cellPreviousState = "inclusion"
+                            }
+                        }
+                        iterator++
+                    }
+
+
+                }
+                catch (e: ArrayIndexOutOfBoundsException){
+                    println("found error")
+                    continue
+                }
+            }
+            engineController.setArray(betaArray)
 
         }
 
-        fun setCircleInclusionsInArray(): Array<Array<Cell>>{
+
+        fun setCircleInclusionsBefore(){
+
             var iterator=1
             val random = Random()
             var betaArray = engineController.getArray()
@@ -82,8 +100,38 @@ class Utils{
                             if (i*i + j*j <= engineController.getInclusionsSize()*engineController.getInclusionsSize() + engineController.getInclusionsSize()*0.8){
                                 try {
                                     betaArray[xSize + i][ySize + j].cellState = "inclusion"
-                                  betaArray[xSize + i][ySize + j].cellPreviousState = "inclusion"
+                                    betaArray[xSize + i][ySize + j].cellPreviousState = "inclusion"
                                     println("$xSize $ySize")
+                                }
+                                catch (e: ArrayIndexOutOfBoundsException){
+                                    println("found error")
+                                    continue
+                                }
+                            }
+                        }
+                    }
+                }
+                iterator++
+            }
+            engineController.setArray(betaArray)
+        }
+
+        fun setCircleInclusionsAfter(){
+            var iterator=1
+
+            val random = Random()
+            var betaArray = engineController.getArray()
+            while(iterator <= engineController.getInclusionsNumber()) {
+
+                var xSize = random.nextInt(engineController.getModelxSize()-2)+1
+                var ySize = random.nextInt(engineController.getModelySize()-2)+1
+                if (betaArray[xSize][ySize].isBoundary == true) {
+                    for (i in -engineController.getInclusionsSize()..engineController.getInclusionsSize()){
+                        for (j in -engineController.getInclusionsSize()..engineController.getInclusionsSize()){
+                            if (i*i + j*j <= engineController.getInclusionsSize()*engineController.getInclusionsSize() + engineController.getInclusionsSize()*0.8){
+                                try {
+                                    betaArray[xSize + i][ySize + j].cellState = "inclusion"
+                                    betaArray[xSize + i][ySize + j].cellPreviousState = "inclusion"
                                 }
                                 catch (e: ArrayIndexOutOfBoundsException){
                                     println("found error")
@@ -94,26 +142,47 @@ class Utils{
                         }
 
                     }
-
+                    iterator++
                 }
-                iterator++
+
             }
             engineController.setArray(betaArray)
-            return betaArray
         }
 
 
+        fun cellsAtBoundary(){
+            var xSize = engineController.getModelxSize()
+            var ySize = engineController.getModelySize()
+            var array = engineController.getArray()
+            for (i in 1..xSize - 2) {
+                for (j in 1..ySize - 2) {
+                        try {
+                            if (array[i - 1][j].cellPreviousState.equals(array[i][j].cellState)!=true && array[i - 1][j].cellPreviousState.equals("inclusion")!=true) {
+                                array[i][j].isBoundary=true
+                            }
+                            else if (array[i + 1][j].cellPreviousState.equals(array[i][j].cellState)!=true && array[i + 1][j].cellPreviousState.equals("inclusion")!=true) {
+                                array[i][j].isBoundary=true
+                            }
+                            else if (array[i][j - 1].cellPreviousState.equals(array[i][j].cellState)!=true && array[i][j - 1].cellPreviousState.equals("inclusion")!=true) {
+                                array[i][j].isBoundary=true
+                            }
+                            else if (array[i][j + 1].cellPreviousState.equals(array[i][j].cellState)!=true && array[i][j + 1].cellPreviousState.equals("inclusion")!=true) {
+                                array[i][j].isBoundary=true
+                            }
+                        } catch (e: ArrayIndexOutOfBoundsException) {
+                            println("error in $i and $j ")
+                            continue
+                        }
+                }
+            }
+            engineController.setArray(array)
+        }
 
-        /**
-         * This function is main engine to simulate gran growth. It requiers sizes, both x and y, and two arrays
-         * on which simulation will proceed
-         * @param xSize                 In v1.0 is the same as arraySize
-         * @param ySize                 In v1.0 is the same as arraySize
-         * @param previousStepArray     Two dimensional array to compare certain cells
-         * @param nextStepArray         Two dimensional array to update changes between previous and next step in real time
-         */
-        fun grainGrow(xSize: Int, ySize: Int, array: Array<Array<Cell>>){
 
+        fun grainGrow(){
+            var xSize = engineController.getModelxSize()
+            var ySize = engineController.getModelySize()
+            var array = engineController.getArray()
             while (true) {
                 var buffer = 0
                 for (i in 1..xSize - 2) {
@@ -147,7 +216,10 @@ class Utils{
                     }
                     println(buffer)
                 }
-                    if(buffer==0) return
+                    if(buffer==0) {
+                        engineController.setArray(array)
+                    return
+                    }
                 }
             }
 
@@ -173,7 +245,7 @@ class Utils{
             engineController.setModelxSize(inputList[0].toInt())
             engineController.setModelySize(inputList[1].toInt())
             var bufferList = inputList.subList(3,inputList.size)
-            var testArray = Array(engineController.getModelxSize(), {Array(engineController.getModelySize(),{Cell(0,0,"empty","empty",0,false)})})
+            var testArray = Array(engineController.getModelxSize(), {Array(engineController.getModelySize(),{Cell(0,0,"empty","empty",-1,false)})})
 
              for(x in 0..bufferList.size-5){
                 if(x%7==0) {

@@ -67,21 +67,10 @@ class engineController : Controller(){
         }
 
 
-        fun runSimulation(xSize: Int, ySize: Int, nucleonsNumber: Int): WritableImage {
-            setModelxSize(xSize)
-            setModelySize(ySize)
-            setNucleonsNumber(nucleonsNumber)
-            var previousStepArray = Array(xSize, { Array(ySize, { Cell(0,0,"empty","empty",0,false) }) })
-            setArray(previousStepArray)
-            Utils.setGrainsInArray(nucleonsNumber, previousStepArray)
-            setModelColorArray(Drawing.setColors(nucleonsNumber))
-            Utils.grainGrow(getModelxSize(), getModelySize(), previousStepArray)
-            var imageToDisplay = Drawing.drawArray()
-            setModelImage(imageToDisplay)
-            return imageToDisplay
+        fun runSimulation(){
+            Utils.grainGrow()
+
+
         }
-
-
-
     }
 }

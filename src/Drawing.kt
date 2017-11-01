@@ -34,7 +34,7 @@ class Drawing {
                 var pixel = alpha shl 24 or (red shl 16) or (green shl 8) or blue
                 arrayOfColors[i]=pixel
             }
-            arrayOfColors[0] = 255 shl 24 or (255 shl 16) or (255 shl 8) or 255
+            arrayOfColors[0] = 0 shl 24 or (0 shl 16) or (0 shl 8) or 0
             return arrayOfColors
         }
 
