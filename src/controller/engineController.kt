@@ -65,7 +65,9 @@ class engineController : Controller(){
         fun getModelImage(): WritableImage{
             return model.image.value
         }
-
+        fun getModelProbability():Int{
+            return model.probabilityOfChange.value.toInt()
+        }
 
         fun runSimulation(){
             Utils.grainGrow()

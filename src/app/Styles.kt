@@ -15,8 +15,12 @@ class Styles : Stylesheet(){
             padding = box(16.px)
             fontSize = 13.px
             fontWeight = FontWeight.BOLD
-            prefWidth = 400.px
-            textField {prefWidth = simulateWidth}
+            prefWidth = 600.px
+            prefHeight = 800.px
+            textField {
+                prefWidth = simulateWidth
+
+            }
             field {prefWidth = simulateWidth}
             button {
                 prefWidth = simulateWidth

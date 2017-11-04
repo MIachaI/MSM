@@ -1,4 +1,5 @@
 import app.Cell
+import app.Moore
 import controller.engineController
 import java.io.File
 import java.io.InputStream
@@ -187,7 +188,7 @@ class Utils{
                 var buffer = 0
                 for (i in 1..xSize - 2) {
                     for (j in 1..ySize - 2) {
-                        if (array[i][j].cellPreviousState.equals("empty")) {
+                        if (array[i][j].cellPreviousState=="empty") {
                             buffer++
                             try {
                                 if (array[i - 1][j].cellPreviousState.equals("empty")!=true && array[i - 1][j].cellPreviousState.equals("inclusion")!=true) {
@@ -216,12 +217,57 @@ class Utils{
                     }
                     println(buffer)
                 }
-                    if(buffer==0) {
-                        engineController.setArray(array)
+                if(buffer==0) {
+                    engineController.setArray(array)
                     return
-                    }
                 }
             }
+            }
+
+
+        fun mooreGrowth(){
+            var xSize = engineController.getModelxSize()
+            var ySize = engineController.getModelySize()
+            var array = engineController.getArray()
+            while (true) {
+                var buffer = 0
+                for (i in 1..xSize - 2) {
+                    for (j in 1..ySize - 2) {
+                        if (array[i][j].cellPreviousState=="empty") {
+                            buffer++
+                            try {
+                                    var temporary = Moore(
+                                            array[i-1][j-1].cellPreviousState,
+                                            array[i-1][j].cellPreviousState,
+                                            array[i-1][j+1].cellPreviousState,
+                                            array[i][j-1].cellPreviousState,
+                                            array[i][j+1].cellPreviousState,
+                                            array[i+1][j-1].cellPreviousState,
+                                            array[i+1][j].cellPreviousState,
+                                            array[i+1][j+1].cellPreviousState)
+                                array[i][j].cellState=temporary.moore()
+                            } catch (e: ArrayIndexOutOfBoundsException) {
+                                println("error in $i and $j ")
+                                continue
+                            }
+                        }
+                    }
+                }
+
+                for (i in 1..xSize-2){
+                    for (j in 1..ySize-2){
+                        engineController.getArray()[i][j].cellPreviousState = engineController.getArray()[i][j].cellState
+                    }
+                }
+                println(buffer)
+                if(buffer==0) {
+                    engineController.setArray(array)
+                    return
+                }
+            }
+
+
+        }
 
 
 
@@ -233,8 +279,10 @@ class Utils{
                 for (j in 0..engineController.getModelySize() - 1) {
                     stringer+="$i $j 0 ${engineController.getArray()[i][j].cellPreviousState} ${engineController.getArray()[i][j].cellState} ${engineController.getArray()[i][j].color} ${engineController.getArray()[i][j].isBoundary} "
                 }
+                fileToWrite.appendText(stringer)
+                stringer=""
             }
-            fileToWrite.appendText(stringer)
+
 
         }
 

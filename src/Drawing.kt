@@ -57,7 +57,7 @@ class Drawing {
             for (i in 1..engineController.getModelxSize() - 2) {
                 for (j in 1..engineController.getModelySize() - 2) {
                     if(engineController.getArray()[i][j].cellState.equals("inclusion")){img.setRGB(i,j,0)}
-                    else if (engineController.getArray()[i][j].cellState.equals("empty")!=true)
+                    else if (engineController.getArray()[i][j].cellState=="empty"!=true && engineController.getArray()[i][j].cellState==""!=true)
                     {
                         engineController.getArray()[i][j].color = engineController.getModelColorArray()[engineController.getArray()[i][j].cellState.toInt()]
                         img.setRGB(i, j, engineController.getArray()[i][j].color)

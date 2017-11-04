@@ -23,6 +23,7 @@ class User {
     var imageProperty = SimpleObjectProperty<WritableImage>()
     var arrayToWorkOn = SimpleObjectProperty<Array<Array<Cell>>>()
     var arrayOfColors = SimpleObjectProperty<Array<Int>>()
+    var probabilityOfChange = SimpleIntegerProperty()
 }
 class UserModel(var integersSet: User) : ViewModel(){
     var xSize = bind { integersSet.xSizeProperty }
@@ -33,6 +34,7 @@ class UserModel(var integersSet: User) : ViewModel(){
     var image = bind { integersSet.imageProperty }
     var array = bind {integersSet.arrayToWorkOn}
     var arrayOfColors = bind {integersSet.arrayOfColors}
+    var probabilityOfChange = bind {integersSet.probabilityOfChange}
 
 
 
