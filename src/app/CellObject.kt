@@ -39,18 +39,23 @@ class Moore (upperLeft: String, up: String, upperRight: String, left: String, ri
         occuranceList.add(bottomLeft)
         occuranceList.add(down)
         occuranceList.add(bottomRight)
-
+        for (i in occuranceList){
+            if (i=="empty"){
+                count++
+            }
+        }
+        if(count>=3){
+            return "empty"
+        }
         for (i in occuranceList) {
             for (j in occuranceList) {
-                if (i == j) {
-
+                if (i == j && i!="empty" && i!="inclusion") {
                     count++
                 }
                 if (maxCount <= count) {
                     maxCount = count
                     popular = i
                 }
-
             }
             count = 0
         }
@@ -74,7 +79,7 @@ class Moore (upperLeft: String, up: String, upperRight: String, left: String, ri
 
         for (i in occuranceList) {
             for (j in occuranceList) {
-                if (i == j) {
+                if (i == j && i!="empty" && i!="inclusion") {
 
                     count++
                 }
@@ -105,15 +110,13 @@ class Moore (upperLeft: String, up: String, upperRight: String, left: String, ri
 
         for (i in occuranceList) {
             for (j in occuranceList) {
-                if (i == j) {
-
+                if (i == j && i!="empty" && i!="inclusion") {
                     count++
                 }
                 if (maxCount <= count) {
                     maxCount = count
                     popular = i
                 }
-
             }
             count = 0
         }
@@ -145,10 +148,10 @@ class Moore (upperLeft: String, up: String, upperRight: String, left: String, ri
 
             for (i in occuranceList) {
                 for (j in occuranceList) {
-                    if (i == j && i!="empty") {
+                    if (i == j && i!="empty" && i!="inclusion") {
                         count++
                     }
-                    if (maxCount <= count) {
+                    if (maxCount <= count && i!="inclusion") {
                         maxCount = count
                         popular = i
                     }
