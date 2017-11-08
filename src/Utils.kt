@@ -272,7 +272,7 @@ class Utils{
 
 
         fun saveToFile(){
-            val fileToWrite = File("export.txt")
+            val fileToWrite = File(engineController.getFileToReadPath())
             fileToWrite.writeText("${engineController.getModelxSize()} ${engineController.getModelySize()} 1 ")
             var stringer = ""
             for (i in 0..engineController.getModelxSize() - 1) {
@@ -287,7 +287,7 @@ class Utils{
         }
 
         fun writeFromFile(){
-            val inputStream: InputStream = File("export.txt").inputStream()
+            val inputStream: InputStream = File(engineController.getFileToReadPath()).inputStream()
             val inputString = inputStream.bufferedReader().use { it.readText() }
             var inputList = inputString.split(" ")
             engineController.setModelxSize(inputList[0].toInt())

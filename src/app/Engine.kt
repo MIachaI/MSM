@@ -2,6 +2,7 @@ package app
 
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleObjectProperty
+import javafx.beans.property.SimpleStringProperty
 import javafx.scene.image.Image
 import javafx.scene.image.PixelReader
 import javafx.scene.image.WritableImage
@@ -24,6 +25,7 @@ class User {
     var arrayToWorkOn = SimpleObjectProperty<Array<Array<Cell>>>()
     var arrayOfColors = SimpleObjectProperty<Array<Int>>()
     var probabilityOfChange = SimpleIntegerProperty()
+    var fileToImport = SimpleStringProperty()
 }
 class UserModel(var integersSet: User) : ViewModel(){
     var xSize = bind { integersSet.xSizeProperty }
@@ -35,6 +37,7 @@ class UserModel(var integersSet: User) : ViewModel(){
     var array = bind {integersSet.arrayToWorkOn}
     var arrayOfColors = bind {integersSet.arrayOfColors}
     var probabilityOfChange = bind {integersSet.probabilityOfChange}
+    var fileToImport = bind {integersSet.fileToImport}
 
 
 

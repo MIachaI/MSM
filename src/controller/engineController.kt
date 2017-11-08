@@ -68,6 +68,12 @@ class engineController : Controller(){
         fun getModelProbability():Int{
             return model.probabilityOfChange.value.toInt()
         }
+        fun getFileToReadPath(): String{
+            return model.fileToImport.value.toString()
+        }
+        fun setFileToReadPath(path: String){
+            model.fileToImport = path.toProperty()
+        }
 
         fun runSimulation(){
             Utils.grainGrow()

@@ -11,6 +11,7 @@ import app.Moore
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections.observableArrayList
 import javafx.geometry.Insets
+import java.io.File
 
 
 class MyApp: App(MyView::class)
@@ -35,9 +36,14 @@ class MyView: View() {
         menubar {
             menu("File") {
                 item("Export").action {
+                    var chosenDirectory = chooseDirectory("Choose directory")
+                    engineController.setFileToReadPath(chosenDirectory.toString())
                     Utils.saveToFile()
                     println("Exported") }
                 item("Import").action {
+                    var extensions: Array<FileChooser.ExtensionFilter> = Array(1, {FileChooser.ExtensionFilter("txt", "*.txt")})
+                    var arrayOfSelectedFiles =chooseFile("Choose a file", extensions, FileChooserMode.Single)
+                    engineController.setFileToReadPath(arrayOfSelectedFiles[0].toString())
                     Utils.writeFromFile()
                     println("Imported")
                     engineController.setModelImage(Drawing.drawArray()) }
