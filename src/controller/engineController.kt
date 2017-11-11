@@ -16,7 +16,7 @@ class engineController : Controller(){
 
 
     companion object {
-        val model = UserModel(User())
+        private val model = UserModel(User())
         fun getModelxSize() = model.xSize.value.toInt()
         fun setModelxSize(sizesize: Int){model.xSize = sizesize.toProperty()}
 
@@ -32,13 +32,14 @@ class engineController : Controller(){
         fun setArray(arrayModel: Array<Array<Cell>>) {
             model.array = arrayModel.toProperty()
         }
-
+/**
         fun getNucleonsNumber(): Int{
             return model.nucleonsNumber.value.toInt()
         }
         fun setNucleonsNumber(numberToSet: Int){
             model.nucleonsNumber = numberToSet.toProperty()
         }
+        **/
         fun getInclusionsNumber(): Int{
             return model.inclusionsNumber.value.toInt()
         }
@@ -74,11 +75,12 @@ class engineController : Controller(){
         fun setFileToReadPath(path: String){
             model.fileToImport = path.toProperty()
         }
-
+/**
         fun runSimulation(){
             Utils.grainGrow()
 
 
         }
+        **/
     }
 }

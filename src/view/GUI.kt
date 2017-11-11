@@ -7,22 +7,24 @@ import controller.engineController
 import javafx.stage.FileChooser
 import tornadofx.*
 import app.Cell
-import app.Moore
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections.observableArrayList
 import javafx.geometry.Insets
-import java.io.File
+
 
 
 class MyApp: App(MyView::class)
 class MyView: View() {
     override val root = Form().addClass(simulate)
-    val model = UserModel(User())
-    val inclusionType = observableArrayList("Circular before", "Circular after", "Square before", "Square after")
-    val selectedInclusionType = SimpleStringProperty()
+    private val model = UserModel(User())
+    private val inclusionType = observableArrayList("Circular before", "Circular after", "Square before", "Square after")
+    private val selectedInclusionType = SimpleStringProperty()
 
-    val simulationType = observableArrayList("Simple growth", "Moore")
-    val selectedSimulationType = SimpleStringProperty()
+    private val simulationType = observableArrayList("Simple growth", "Moore")
+    private val selectedSimulationType = SimpleStringProperty()
+
+    private val structureType = observableArrayList("Substructure","Dual phase")
+    private val selectedStructureType = SimpleStringProperty()
 
     init {
         engineController.setModelColorArray(Drawing.setColors(1000))
@@ -36,13 +38,13 @@ class MyView: View() {
         menubar {
             menu("File") {
                 item("Export").action {
-                    var chosenDirectory = chooseDirectory("Choose directory")
+                    val chosenDirectory = chooseDirectory("Choose directory")
                     engineController.setFileToReadPath(chosenDirectory.toString())
                     Utils.saveToFile()
                     println("Exported") }
                 item("Import").action {
-                    var extensions: Array<FileChooser.ExtensionFilter> = Array(1, {FileChooser.ExtensionFilter("txt", "*.txt")})
-                    var arrayOfSelectedFiles =chooseFile("Choose a file", extensions, FileChooserMode.Single)
+                    val extensions: Array<FileChooser.ExtensionFilter> = Array(1, {FileChooser.ExtensionFilter("txt", "*.txt")})
+                    val arrayOfSelectedFiles =chooseFile("Choose a file", extensions, FileChooserMode.Single)
                     engineController.setFileToReadPath(arrayOfSelectedFiles[0].toString())
                     Utils.writeFromFile()
                     println("Imported")
@@ -111,14 +113,14 @@ class MyView: View() {
                         action {
                             engineController.setInclusionsNumber(model.inclusionsNumber.value.toInt())
                             engineController.setInclusionsSize(model.inclusionsSize.value.toInt())
-                            if (selectedInclusionType.value.equals("Circular before")) Utils.setCircleInclusionsBefore()
-                            if (selectedInclusionType.value.equals("Square before")) Utils.setDiagonalInclusionsBefore()
-                            if (selectedInclusionType.value.equals("Circular after")) {
+                            if (selectedInclusionType.value=="Circular before") Utils.setCircleInclusionsBefore()
+                            if (selectedInclusionType.value=="Square before") Utils.setDiagonalInclusionsBefore()
+                            if (selectedInclusionType.value=="Circular after") {
                                 Utils.cellsAtBoundary()
                                 Utils.setCircleInclusionsAfter()
 
                             }
-                            if (selectedInclusionType.value.equals("Square after")) {
+                            if (selectedInclusionType.value=="Square after") {
                                 Utils.cellsAtBoundary()
                                 Utils.setDiagonalInclusionsAfter()
                             }
@@ -128,6 +130,7 @@ class MyView: View() {
 
             }
         }
+
         form {
              button("render image") {
         action {
@@ -142,11 +145,10 @@ class MyView: View() {
                                  scaleX = 1.0
                                  scaleY = 1.0
 
-                }
+                                  }
+                              }
+                         }
+                     }
             }
-        }
     }
-
-            }
-        }
     }

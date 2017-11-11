@@ -225,7 +225,7 @@ class Utils{
             }
 
 
-        fun mooreGrowth(){
+        fun mooreGrowth() {
             var xSize = engineController.getModelxSize()
             var ySize = engineController.getModelySize()
             var array = engineController.getArray()
@@ -233,19 +233,19 @@ class Utils{
                 var buffer = 0
                 for (i in 1..xSize - 2) {
                     for (j in 1..ySize - 2) {
-                        if (array[i][j].cellPreviousState=="empty") {
+                        if (array[i][j].cellPreviousState == "empty") {
                             buffer++
                             try {
-                                    var temporary = Moore(
-                                            array[i-1][j-1].cellPreviousState,
-                                            array[i-1][j].cellPreviousState,
-                                            array[i-1][j+1].cellPreviousState,
-                                            array[i][j-1].cellPreviousState,
-                                            array[i][j+1].cellPreviousState,
-                                            array[i+1][j-1].cellPreviousState,
-                                            array[i+1][j].cellPreviousState,
-                                            array[i+1][j+1].cellPreviousState)
-                                array[i][j].cellState=temporary.moore()
+                                var temporary = Moore(
+                                        array[i - 1][j - 1].cellPreviousState,
+                                        array[i - 1][j].cellPreviousState,
+                                        array[i - 1][j + 1].cellPreviousState,
+                                        array[i][j - 1].cellPreviousState,
+                                        array[i][j + 1].cellPreviousState,
+                                        array[i + 1][j - 1].cellPreviousState,
+                                        array[i + 1][j].cellPreviousState,
+                                        array[i + 1][j + 1].cellPreviousState)
+                                array[i][j].cellState = temporary.moore()
                             } catch (e: ArrayIndexOutOfBoundsException) {
                                 println("error in $i and $j ")
                                 continue
@@ -254,25 +254,25 @@ class Utils{
                     }
                 }
 
-                for (i in 1..xSize-2){
-                    for (j in 1..ySize-2){
+                for (i in 1..xSize - 2) {
+                    for (j in 1..ySize - 2) {
                         engineController.getArray()[i][j].cellPreviousState = engineController.getArray()[i][j].cellState
                     }
                 }
                 println(buffer)
-                if(buffer==0) {
+                if (buffer == 0) {
                     engineController.setArray(array)
                     return
                 }
             }
-
-
         }
 
 
 
+
+
         fun saveToFile(){
-            val fileToWrite = File(engineController.getFileToReadPath())
+            val fileToWrite = File(engineController.getFileToReadPath()+"/export.txt")
             fileToWrite.writeText("${engineController.getModelxSize()} ${engineController.getModelySize()} 1 ")
             var stringer = ""
             for (i in 0..engineController.getModelxSize() - 1) {
@@ -301,13 +301,10 @@ class Utils{
                     testArray[bufferList[x].toInt()][bufferList[x + 1].toInt()].cellState = bufferList[x + 4]
                     testArray[bufferList[x].toInt()][bufferList[x + 1].toInt()].color = bufferList[x + 5].toInt()
                     testArray[bufferList[x].toInt()][bufferList[x + 1].toInt()].isBoundary = bufferList[x + 6].toBoolean()
-
-
                 }
             }
             engineController.setArray(testArray)
         }
-
-
-    }}
+    }
+}
 

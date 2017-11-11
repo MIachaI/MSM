@@ -5,28 +5,12 @@ import java.time.temporal.TemporalAdjusters.previous
 import java.util.*
 
 
-class Cell(x: Int, y: Int, cellState: String, previousCellState: String, colorSet: Int, boundary: Boolean){
+class Cell(var xCoordinate: Int, var yCoordinate: Int,  var cellState: String, var cellPreviousState: String,var color: Int,  var isBoundary: Boolean)
 
-        var xCoordinate = x
-        var yCoordinate = y
-        var cellState = cellState
-        var cellPreviousState = previousCellState
-        var color = colorSet
-        var isBoundary = boundary
-}
-class Moore (upperLeft: String, up: String, upperRight: String, left: String, right: String, bottomLeft: String, down: String, bottomRight: String) {
-    var upperLeft = upperLeft
-    var up = up
-    var upperRight = upperRight
-    var left = left
-    var right = right
-    var bottomLeft = bottomLeft
-    var down = down
-    var bottomRight = bottomRight
-
+class Moore (var upperLeft: String,var up: String,var upperRight: String,var left: String,var right: String,var bottomLeft: String,var down: String,var bottomRight: String) {
 
     fun firstRule(): String {
-        var occuranceList = arrayListOf<String>()
+        val occuranceList = arrayListOf<String>()
         var count = 0
         var maxCount = 0
         var popular = ""
@@ -67,7 +51,7 @@ class Moore (upperLeft: String, up: String, upperRight: String, left: String, ri
     }
 
     fun secondRule(): String {
-        var occuranceList = arrayListOf<String>()
+        val occuranceList = arrayListOf<String>()
         var count = 0
         var maxCount = 0
         var popular = ""
@@ -98,7 +82,7 @@ class Moore (upperLeft: String, up: String, upperRight: String, left: String, ri
     }
 
     fun thirdRule(): String {
-        var occuranceList = arrayListOf<String>()
+        val occuranceList = arrayListOf<String>()
         var count = 0
         var maxCount = 0
         var popular = ""
@@ -127,12 +111,12 @@ class Moore (upperLeft: String, up: String, upperRight: String, left: String, ri
     }
 
     fun fourthRule(): String{
-        var random = Random()
-        var occuranceList = arrayListOf<String>()
+        val random = Random()
+        val occuranceList = arrayListOf<String>()
         var count = 0
         var maxCount = 0
         var popular = "empty"
-        var randomValue = random.nextInt(100)
+        val randomValue = random.nextInt(100)
         if (randomValue <= engineController.getModelProbability()) {
 
 

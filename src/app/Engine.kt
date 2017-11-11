@@ -3,13 +3,8 @@ package app
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
-import javafx.scene.image.Image
-import javafx.scene.image.PixelReader
 import javafx.scene.image.WritableImage
-import tornadofx.View
 import tornadofx.ViewModel
-import tornadofx.getProperty
-import tornadofx.property
 
 /**
  * Created by MIachaI on 19.10.2017.
