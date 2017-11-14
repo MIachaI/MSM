@@ -7,6 +7,7 @@ import controller.engineController
 import javafx.stage.FileChooser
 import tornadofx.*
 import app.Cell
+import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections.observableArrayList
 import javafx.geometry.Insets
@@ -23,8 +24,7 @@ class MyView: View() {
     private val simulationType = observableArrayList("Simple growth", "Moore")
     private val selectedSimulationType = SimpleStringProperty()
 
-    private val structureType = observableArrayList("Substructure","Dual phase")
-    private val selectedStructureType = SimpleStringProperty()
+    private val dualPhaseCheckbox = SimpleBooleanProperty()
 
     init {
         engineController.setModelColorArray(Drawing.setColors(1000))
@@ -80,11 +80,28 @@ class MyView: View() {
                                   Utils.grainGrow()
                               }
                               if(selectedSimulationType.value=="Moore"){
+                                  engineController.setModelProbability(model.probabilityOfChange.value.toInt())
                                   Utils.mooreGrowth()
                               }
                               println("Simulation done")
                            }
                      }
+                    field("Grains to delete") {textfield(model.grainsToKeep)                }
+                checkbox("Dual phase mode", dualPhaseCheckbox).action {
+
+                }
+
+                button("Reset unselected grains") {
+                    action {
+                        engineController.setNumberOfSelectedGrains(model.grainsToKeep.value.toInt())
+                        Utils.resetArrayWithSelectedGrains()
+
+                        if(dualPhaseCheckbox.value == true){
+                            Utils.dualPhase()
+                        }
+                    }
+                }
+
             }
             hbox {
                 fieldset("preferences") {

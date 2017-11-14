@@ -40,6 +40,7 @@ class Drawing {
             for (i in 1..engineController.getModelxSize() - 2) {
                 for (j in 1..engineController.getModelySize() - 2) {
                     if(engineController.getArray()[i][j].cellState=="inclusion"){img.setRGB(i,j,0)}
+                    if(engineController.getArray()[i][j].cellState=="dual phase"){img.setRGB(i,j,100 shl 24 or (100 shl 16) or (100 shl 8) or 100)}
                     else if (engineController.getArray()[i][j].cellState!="empty" && engineController.getArray()[i][j].cellState!="")
                     {
                         engineController.getArray()[i][j].color = engineController.getModelColorArray()[engineController.getArray()[i][j].cellState.toInt()]

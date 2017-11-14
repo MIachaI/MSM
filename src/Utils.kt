@@ -267,6 +267,32 @@ class Utils{
             }
         }
 
+        fun resetArrayWithSelectedGrains(){
+            var temporaryArray = engineController.getArray()
+            var numberOfGrainstoKeep = engineController.getNumberOfSelectedGrains()
+            for (i in 0..engineController.getModelxSize() - 1) {
+                for (j in 0..engineController.getModelySize() - 1) {
+                    if(temporaryArray[i][j].cellState=="empty" || temporaryArray[i][j].cellState=="inclusion" || temporaryArray[i][j].cellState.toInt()<=numberOfGrainstoKeep)
+                        temporaryArray[i][j].cellState = "empty"
+                        temporaryArray[i][j].cellPreviousState = "empty"
+                }
+            }
+            engineController.setArray(temporaryArray)
+        }
+
+        fun dualPhase(){
+            var temporaryArray = engineController.getArray()
+            for (i in 0..engineController.getModelxSize() - 1) {
+                for (j in 0..engineController.getModelySize() - 1) {
+                    if(temporaryArray[i][j].cellState!="empty"){
+                        temporaryArray[i][j].cellState="dual phase"
+                        temporaryArray[i][j].cellPreviousState="dual phase"
+                        println("$i $j")
+                    }
+                }
+            }
+            engineController.setArray(temporaryArray)
+        }
 
 
 

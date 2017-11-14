@@ -21,6 +21,7 @@ class User {
     var arrayOfColors = SimpleObjectProperty<Array<Int>>()
     var probabilityOfChange = SimpleIntegerProperty()
     var fileToImport = SimpleStringProperty()
+    var grainsToKeep = SimpleIntegerProperty()
 }
 class UserModel(var integersSet: User) : ViewModel(){
     var xSize = bind { integersSet.xSizeProperty }
@@ -33,6 +34,7 @@ class UserModel(var integersSet: User) : ViewModel(){
     var arrayOfColors = bind {integersSet.arrayOfColors}
     var probabilityOfChange = bind {integersSet.probabilityOfChange}
     var fileToImport = bind {integersSet.fileToImport}
+    var grainsToKeep = bind { integersSet.grainsToKeep}
 
 
 

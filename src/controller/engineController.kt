@@ -18,12 +18,12 @@ class engineController : Controller(){
     companion object {
         private val model = UserModel(User())
         fun getModelxSize() = model.xSize.value.toInt()
-        fun setModelxSize(sizesize: Int){model.xSize = sizesize.toProperty()}
+        fun setModelxSize(size: Int){model.xSize = size.toProperty()}
 
         fun getModelySize() =model.ySize.value.toInt()
 
-        fun setModelySize(sizesize: Int){
-            model.ySize = sizesize.toProperty()
+        fun setModelySize(size: Int){
+            model.ySize = size.toProperty()
         }
 
         fun getArray(): Array<Array<Cell>>{
@@ -32,14 +32,14 @@ class engineController : Controller(){
         fun setArray(arrayModel: Array<Array<Cell>>) {
             model.array = arrayModel.toProperty()
         }
-/**
+
         fun getNucleonsNumber(): Int{
             return model.nucleonsNumber.value.toInt()
         }
         fun setNucleonsNumber(numberToSet: Int){
             model.nucleonsNumber = numberToSet.toProperty()
         }
-        **/
+
         fun getInclusionsNumber(): Int{
             return model.inclusionsNumber.value.toInt()
         }
@@ -66,6 +66,10 @@ class engineController : Controller(){
         fun getModelImage(): WritableImage{
             return model.image.value
         }
+
+        fun setModelProbability(probability: Int){
+            model.probabilityOfChange = probability.toProperty()
+        }
         fun getModelProbability():Int{
             return model.probabilityOfChange.value.toInt()
         }
@@ -74,6 +78,12 @@ class engineController : Controller(){
         }
         fun setFileToReadPath(path: String){
             model.fileToImport = path.toProperty()
+        }
+        fun setNumberOfSelectedGrains(numberOfGrains: Int){
+            model.grainsToKeep = numberOfGrains.toProperty()
+        }
+        fun getNumberOfSelectedGrains(): Int{
+           return model.grainsToKeep.value.toInt()
         }
 /**
         fun runSimulation(){

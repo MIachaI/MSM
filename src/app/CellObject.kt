@@ -117,7 +117,7 @@ class Moore (var upperLeft: String,var up: String,var upperRight: String,var lef
         var maxCount = 0
         var popular = "empty"
         val randomValue = random.nextInt(100)
-        if (randomValue <= engineController.getModelProbability()) {
+        if (randomValue >= engineController.getModelProbability()) {
 
 
             occuranceList.add(upperLeft)
