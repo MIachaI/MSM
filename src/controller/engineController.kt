@@ -85,6 +85,12 @@ class engineController : Controller(){
         fun getNumberOfSelectedGrains(): Int{
            return model.grainsToKeep.value.toInt()
         }
+        fun setBoundaryDrawing(draw: Boolean){
+            model.drawBoundary = draw.toProperty()
+        }
+        fun getBoundaryDrawing(): Boolean{
+            return model.drawBoundary.value
+        }
 /**
         fun runSimulation(){
             Utils.grainGrow()

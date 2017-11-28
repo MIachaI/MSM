@@ -25,6 +25,7 @@ class MyView: View() {
     private val selectedSimulationType = SimpleStringProperty()
 
     private val dualPhaseCheckbox = SimpleBooleanProperty()
+    private val drawBoundariesCheckbox = SimpleBooleanProperty()
 
     init {
         engineController.setModelColorArray(Drawing.setColors(1000))
@@ -66,7 +67,7 @@ class MyView: View() {
                 }
                 button("Create an array") {
                     action {
-                        engineController.setArray(Array(model.xSize.value.toInt(), { Array(model.ySize.value.toInt(), { Cell(0, 0, "empty", "empty", 0, false) }) }))
+                        engineController.setArray(Array(model.xSize.value.toInt(), { Array(model.ySize.value.toInt(), { Cell(0, 0, "empty", "empty", 0, false, false) }) }))
                         engineController.setModelxSize(model.xSize.value.toInt())
                         engineController.setModelySize(model.ySize.value.toInt())
 
@@ -87,9 +88,8 @@ class MyView: View() {
                            }
                      }
                     field("Grains to delete") {textfield(model.grainsToKeep)                }
-                checkbox("Dual phase mode", dualPhaseCheckbox).action {
-
-                }
+                checkbox("Dual phase mode", dualPhaseCheckbox)
+                checkbox("Draw boundaries", drawBoundariesCheckbox)
 
                 button("Reset unselected grains") {
                     action {
@@ -128,17 +128,15 @@ class MyView: View() {
 
                     button("Set Inclusions") {
                         action {
+                            Utils.cellsAtBoundary()
                             engineController.setInclusionsNumber(model.inclusionsNumber.value.toInt())
                             engineController.setInclusionsSize(model.inclusionsSize.value.toInt())
                             if (selectedInclusionType.value=="Circular before") Utils.setCircleInclusionsBefore()
                             if (selectedInclusionType.value=="Square before") Utils.setDiagonalInclusionsBefore()
                             if (selectedInclusionType.value=="Circular after") {
-                                Utils.cellsAtBoundary()
                                 Utils.setCircleInclusionsAfter()
-
                             }
                             if (selectedInclusionType.value=="Square after") {
-                                Utils.cellsAtBoundary()
                                 Utils.setDiagonalInclusionsAfter()
                             }
                         }
@@ -149,12 +147,23 @@ class MyView: View() {
         }
 
         form {
-             button("render image") {
+            button("Clear space") {
+                action {
+                    engineController.setNumberOfSelectedGrains(model.grainsToKeep.value.toInt())
+                    Utils.cellsAtBoundary()
+                    Utils.clearSpace()
+
+                }
+            }
+             button("Render image") {
         action {
+            Utils.cellsAtBoundary()
+            engineController.setBoundaryDrawing(drawBoundariesCheckbox.value)
+            println(engineController.getBoundaryDrawing())
             engineController.setModelImage(Drawing.drawArray())
         }
     }
-                 button("show result") {
+                 button("Show result") {
                      action {
                          vbox {
                             imageview(engineController.getModelImage()) {

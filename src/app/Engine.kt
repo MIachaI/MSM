@@ -1,5 +1,6 @@
 package app
 
+import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
@@ -22,6 +23,7 @@ class User {
     var probabilityOfChange = SimpleIntegerProperty()
     var fileToImport = SimpleStringProperty()
     var grainsToKeep = SimpleIntegerProperty()
+    var drawBoundary = SimpleBooleanProperty()
 }
 class UserModel(var integersSet: User) : ViewModel(){
     var xSize = bind { integersSet.xSizeProperty }
@@ -35,6 +37,7 @@ class UserModel(var integersSet: User) : ViewModel(){
     var probabilityOfChange = bind {integersSet.probabilityOfChange}
     var fileToImport = bind {integersSet.fileToImport}
     var grainsToKeep = bind { integersSet.grainsToKeep}
+    var drawBoundary = bind { integersSet.drawBoundary}
 
 
 

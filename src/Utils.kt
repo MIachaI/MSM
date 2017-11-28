@@ -160,15 +160,19 @@ class Utils{
                         try {
                             if (array[i - 1][j].cellPreviousState.equals(array[i][j].cellState)!=true && array[i - 1][j].cellPreviousState.equals("inclusion")!=true) {
                                 array[i][j].isBoundary=true
+                                array[i][j].isLocked=true
                             }
                             else if (array[i + 1][j].cellPreviousState.equals(array[i][j].cellState)!=true && array[i + 1][j].cellPreviousState.equals("inclusion")!=true) {
                                 array[i][j].isBoundary=true
+                                array[i][j].isLocked=true
                             }
                             else if (array[i][j - 1].cellPreviousState.equals(array[i][j].cellState)!=true && array[i][j - 1].cellPreviousState.equals("inclusion")!=true) {
                                 array[i][j].isBoundary=true
+                                array[i][j].isLocked=true
                             }
                             else if (array[i][j + 1].cellPreviousState.equals(array[i][j].cellState)!=true && array[i][j + 1].cellPreviousState.equals("inclusion")!=true) {
                                 array[i][j].isBoundary=true
+                                array[i][j].isLocked=true
                             }
                         } catch (e: ArrayIndexOutOfBoundsException) {
                             println("error in $i and $j ")
@@ -191,16 +195,16 @@ class Utils{
                         if (array[i][j].cellPreviousState=="empty") {
                             buffer++
                             try {
-                                if (array[i - 1][j].cellPreviousState.equals("empty")!=true && array[i - 1][j].cellPreviousState.equals("inclusion")!=true) {
+                                if (array[i - 1][j].cellPreviousState.equals("empty")!=true && array[i - 1][j].isLocked ==false) {
                                     array[i][j].cellState = array[i - 1][j].cellPreviousState
                                 }
-                                else if (array[i + 1][j].cellPreviousState.equals("empty")!=true && array[i + 1][j].cellPreviousState.equals("inclusion")!=true) {
+                                else if (array[i + 1][j].cellPreviousState.equals("empty")!=true && array[i + 1][j].isLocked==false) {
                                     array[i][j].cellState = array[i + 1][j].cellPreviousState
                                 }
-                                else if (array[i][j - 1].cellPreviousState.equals("empty")!=true && array[i][j - 1].cellPreviousState.equals("inclusion")!=true) {
+                                else if (array[i][j - 1].cellPreviousState.equals("empty")!=true && array[i][j - 1].isLocked==false) {
                                     array[i][j].cellState = array[i][j - 1].cellPreviousState
                                 }
-                                else if (array[i][j + 1].cellPreviousState.equals("empty")!=true && array[i][j + 1].cellPreviousState.equals("inclusion")!=true) {
+                                else if (array[i][j + 1].cellPreviousState.equals("empty")!=true && array[i][j + 1].isLocked==false) {
                                     array[i][j].cellState = array[i][j + 1].cellPreviousState
                                 }
                             } catch (e: ArrayIndexOutOfBoundsException) {
@@ -272,9 +276,13 @@ class Utils{
             var numberOfGrainstoKeep = engineController.getNumberOfSelectedGrains()
             for (i in 0..engineController.getModelxSize() - 1) {
                 for (j in 0..engineController.getModelySize() - 1) {
-                    if(temporaryArray[i][j].cellState=="empty" || temporaryArray[i][j].cellState=="inclusion" || temporaryArray[i][j].cellState.toInt()<=numberOfGrainstoKeep)
+                    if(temporaryArray[i][j].cellState=="empty" || temporaryArray[i][j].cellState=="inclusion" || temporaryArray[i][j].cellState.toInt()<=numberOfGrainstoKeep){
                         temporaryArray[i][j].cellState = "empty"
-                        temporaryArray[i][j].cellPreviousState = "empty"
+                        temporaryArray[i][j].cellPreviousState = "empty"}
+                    else{
+                        temporaryArray[i][j].isLocked = true
+                    }
+
                 }
             }
             engineController.setArray(temporaryArray)
@@ -287,6 +295,7 @@ class Utils{
                     if(temporaryArray[i][j].cellState!="empty"){
                         temporaryArray[i][j].cellState="dual phase"
                         temporaryArray[i][j].cellPreviousState="dual phase"
+                        temporaryArray[i][j].isLocked = true
                         println("$i $j")
                     }
                 }
@@ -294,7 +303,24 @@ class Utils{
             engineController.setArray(temporaryArray)
         }
 
-
+        fun clearSpace(){
+            var temporaryArray = engineController.getArray()
+            var numberOfGrainstoKeep = engineController.getNumberOfSelectedGrains()
+            println(numberOfGrainstoKeep)
+            for (i in 0..engineController.getModelxSize() - 1) {
+                for (j in 0..engineController.getModelySize() - 1) {
+                    if(temporaryArray[i][j].cellState!="empty"){
+                    if(temporaryArray[i][j].isBoundary==false) {
+                        if (temporaryArray[i][j].cellState.toInt() <= numberOfGrainstoKeep){
+                        temporaryArray[i][j].cellState = "empty"
+                        temporaryArray[i][j].cellPreviousState = "empty"
+                    }
+                    }
+                    }
+                }
+            }
+            engineController.setArray(temporaryArray)
+        }
 
 
         fun saveToFile(){
@@ -303,7 +329,7 @@ class Utils{
             var stringer = ""
             for (i in 0..engineController.getModelxSize() - 1) {
                 for (j in 0..engineController.getModelySize() - 1) {
-                    stringer+="$i $j 0 ${engineController.getArray()[i][j].cellPreviousState} ${engineController.getArray()[i][j].cellState} ${engineController.getArray()[i][j].color} ${engineController.getArray()[i][j].isBoundary} "
+                    stringer+="$i $j 0 ${engineController.getArray()[i][j].cellPreviousState} ${engineController.getArray()[i][j].cellState} ${engineController.getArray()[i][j].color} ${engineController.getArray()[i][j].isBoundary} ${engineController.getArray()[i][j].isLocked} "
                 }
                 fileToWrite.appendText(stringer)
                 stringer=""
@@ -319,7 +345,7 @@ class Utils{
             engineController.setModelxSize(inputList[0].toInt())
             engineController.setModelySize(inputList[1].toInt())
             var bufferList = inputList.subList(3,inputList.size)
-            var testArray = Array(engineController.getModelxSize(), {Array(engineController.getModelySize(),{Cell(0,0,"empty","empty",-1,false)})})
+            var testArray = Array(engineController.getModelxSize(), {Array(engineController.getModelySize(),{Cell(0,0,"empty","empty",-1,false, false)})})
 
              for(x in 0..bufferList.size-5){
                 if(x%7==0) {
@@ -327,6 +353,7 @@ class Utils{
                     testArray[bufferList[x].toInt()][bufferList[x + 1].toInt()].cellState = bufferList[x + 4]
                     testArray[bufferList[x].toInt()][bufferList[x + 1].toInt()].color = bufferList[x + 5].toInt()
                     testArray[bufferList[x].toInt()][bufferList[x + 1].toInt()].isBoundary = bufferList[x + 6].toBoolean()
+                    testArray[bufferList[x].toInt()][bufferList[x + 1].toInt()].isLocked = bufferList[x + 7].toBoolean()
                 }
             }
             engineController.setArray(testArray)
