@@ -195,16 +195,16 @@ class Utils{
                         if (array[i][j].cellPreviousState=="empty") {
                             buffer++
                             try {
-                                if (array[i - 1][j].cellPreviousState.equals("empty")!=true && array[i - 1][j].isLocked ==false) {
+                                if (array[i - 1][j].cellPreviousState.equals("empty")!=true && array[i - 1][j].isLocked ==false && array[i - 1][j].cellPreviousState.equals("inclusion")!=true) {
                                     array[i][j].cellState = array[i - 1][j].cellPreviousState
                                 }
-                                else if (array[i + 1][j].cellPreviousState.equals("empty")!=true && array[i + 1][j].isLocked==false) {
+                                else if (array[i + 1][j].cellPreviousState.equals("empty")!=true && array[i + 1][j].isLocked==false && array[i + 1][j].cellPreviousState.equals("inclusion")!=true) {
                                     array[i][j].cellState = array[i + 1][j].cellPreviousState
                                 }
-                                else if (array[i][j - 1].cellPreviousState.equals("empty")!=true && array[i][j - 1].isLocked==false) {
+                                else if (array[i][j - 1].cellPreviousState.equals("empty")!=true && array[i][j - 1].isLocked==false && array[i][j - 1].cellPreviousState.equals("inclusion")!=true) {
                                     array[i][j].cellState = array[i][j - 1].cellPreviousState
                                 }
-                                else if (array[i][j + 1].cellPreviousState.equals("empty")!=true && array[i][j + 1].isLocked==false) {
+                                else if (array[i][j + 1].cellPreviousState.equals("empty")!=true && array[i][j + 1].isLocked==false && array[i][j + 1].cellPreviousState.equals("inclusion")!=true) {
                                     array[i][j].cellState = array[i][j + 1].cellPreviousState
                                 }
                             } catch (e: ArrayIndexOutOfBoundsException) {

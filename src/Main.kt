@@ -8,12 +8,8 @@ import Utils
 import app.Cell
 import java.awt.image.BufferedImage
 
-fun main (args : Array<String>){
-
-println("deprecated")
 
 
-    }
 
 
 

@@ -128,15 +128,16 @@ class MyView: View() {
 
                     button("Set Inclusions") {
                         action {
-                            Utils.cellsAtBoundary()
                             engineController.setInclusionsNumber(model.inclusionsNumber.value.toInt())
                             engineController.setInclusionsSize(model.inclusionsSize.value.toInt())
                             if (selectedInclusionType.value=="Circular before") Utils.setCircleInclusionsBefore()
                             if (selectedInclusionType.value=="Square before") Utils.setDiagonalInclusionsBefore()
                             if (selectedInclusionType.value=="Circular after") {
+                                Utils.cellsAtBoundary()
                                 Utils.setCircleInclusionsAfter()
                             }
                             if (selectedInclusionType.value=="Square after") {
+                                Utils.cellsAtBoundary()
                                 Utils.setDiagonalInclusionsAfter()
                             }
                         }
