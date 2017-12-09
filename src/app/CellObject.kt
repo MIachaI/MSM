@@ -5,7 +5,7 @@ import java.time.temporal.TemporalAdjusters.previous
 import java.util.*
 
 
-class Cell(var xCoordinate: Int, var yCoordinate: Int,  var cellState: String, var cellPreviousState: String,var color: Int,  var isBoundary: Boolean, var isLocked: Boolean)
+class Cell(var xCoordinate: Int, var yCoordinate: Int,  var cellState: String, var cellPreviousState: String,var color: Int,  var isBoundary: Boolean, var isLocked: Boolean, var energy: Int)
 
 class Moore (var upperLeft: String,var up: String,var upperRight: String,var left: String,var right: String,var bottomLeft: String,var down: String,var bottomRight: String) {
 

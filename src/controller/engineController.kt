@@ -60,6 +60,7 @@ class engineController : Controller(){
         fun setModelColorArray(arrayToSet: Array<Int>){
             model.arrayOfColors = arrayToSet.toProperty()
         }
+
         fun setModelImage(imageToSet: WritableImage){
             model.image = imageToSet.toProperty()
         }
@@ -91,6 +92,19 @@ class engineController : Controller(){
         fun getBoundaryDrawing(): Boolean{
             return model.drawBoundary.value
         }
+        fun getEnergyLevel(): Int{
+            return model.energyLevel.value.toInt()
+        }
+        fun setEnergyLevel(energyLevel: Int){
+            model.energyLevel = energyLevel.toProperty()
+        }
+        fun getEnergyColorArray(): Array<Int>{
+            return model.arrayOfEnergy.value
+        }
+        fun setEnergyColorArray(arrayToSet: Array<Int>){
+            model.arrayOfEnergy = arrayToSet.toProperty()
+        }
+
 /**
         fun runSimulation(){
             Utils.grainGrow()

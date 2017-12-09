@@ -26,7 +26,7 @@ class MyView: View() {
 
     private val dualPhaseCheckbox = SimpleBooleanProperty()
     private val drawBoundariesCheckbox = SimpleBooleanProperty()
-
+    private val workOnEnergy = SimpleBooleanProperty()
     init {
         engineController.setModelColorArray(Drawing.setColors(1000))
         reloadViewsOnFocus()
@@ -67,7 +67,7 @@ class MyView: View() {
                 }
                 button("Create an array") {
                     action {
-                        engineController.setArray(Array(model.xSize.value.toInt(), { Array(model.ySize.value.toInt(), { Cell(0, 0, "empty", "empty", 0, false, false) }) }))
+                        engineController.setArray(Array(model.xSize.value.toInt(), { Array(model.ySize.value.toInt(), { Cell(0, 0, "empty", "empty", 0, false, false, 0) }) }))
                         engineController.setModelxSize(model.xSize.value.toInt())
                         engineController.setModelySize(model.ySize.value.toInt())
 
@@ -90,6 +90,7 @@ class MyView: View() {
                     field("Grains to delete") {textfield(model.grainsToKeep)                }
                 checkbox("Dual phase mode", dualPhaseCheckbox)
                 checkbox("Draw boundaries", drawBoundariesCheckbox)
+                checkbox("Energy counting mode", workOnEnergy)
 
                 button("Reset unselected grains") {
                     action {
@@ -118,11 +119,14 @@ class MyView: View() {
                     field("Inclusions Size") {
                         textfield(model.inclusionsSize).required()
                     }
+                    field("Energy levels"){
+                        textfield(model.energyLevel)
+                    }
 
                     button("Set Nucleons") {
                         action {
-                            Utils.setGrainsInArray(model.nucleonsNumber.value.toInt(), engineController.getArray())
-                            println("Nucelons set")
+                            engineController.setNucleonsNumber(model.nucleonsNumber.value.toInt())
+                            Utils.setGrainsInArray()
                         }
                     }
 
@@ -142,6 +146,14 @@ class MyView: View() {
                             }
                         }
                     }
+                    button("Set energy") {
+                        action {
+                            engineController.setEnergyLevel(model.energyLevel.value.toInt())
+                            Utils.setEnergyInArray()
+                            println("Energy set")
+                            println(engineController.getEnergyLevel())
+                        }
+                    }
                 }
 
             }
@@ -158,14 +170,32 @@ class MyView: View() {
             }
              button("Render image") {
         action {
+            if(!workOnEnergy.value){
             Utils.cellsAtBoundary()
             engineController.setBoundaryDrawing(drawBoundariesCheckbox.value)
             println(engineController.getBoundaryDrawing())
-            engineController.setModelImage(Drawing.drawArray())
+            engineController.setModelImage(Drawing.drawArray())}
+            else{
+                Drawing.setEnergyColors()
+                Drawing.drawEnergy()
+
+            }
         }
     }
                  button("Show result") {
                      action {
+                         if(!workOnEnergy.value){
+                             Utils.cellsAtBoundary()
+                             engineController.setBoundaryDrawing(drawBoundariesCheckbox.value)
+                             println(engineController.getBoundaryDrawing())
+                             engineController.setModelImage(Drawing.drawArray())}
+                         else{
+                             Drawing.setEnergyColors()
+                             Drawing.drawEnergy()
+
+                         }
+
+
                          vbox {
                             imageview(engineController.getModelImage()) {
                                  useMaxWidth = true

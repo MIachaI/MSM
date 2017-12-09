@@ -15,9 +15,11 @@ class Utils{
 
     companion object {
 
-        fun setGrainsInArray(grains: Int, array: Array<Array<Cell>>): Array<Array<Cell>>{
+        fun setGrainsInArray(): Array<Array<Cell>>{
             var iterator=1
             val random = Random()
+            val grains = engineController.getNucleonsNumber()
+            val array = engineController.getArray()
             while(iterator <= grains) {
 
                 var xSize = random.nextInt(engineController.getModelxSize()-2)+1
@@ -29,6 +31,22 @@ class Utils{
                 }
             }
             return array
+        }
+
+
+        fun setEnergyInArray(){
+            var array = engineController.getArray()
+            val random = Random()
+            var energyLevels = engineController.getEnergyLevel()
+            var xSize = engineController.getModelxSize()
+            var ySize = engineController.getModelySize()
+            for (i in 1..xSize-2) {
+                for (j in 1..ySize-2) {
+                    array[i][j].energy = random.nextInt(energyLevels)
+                    println(array[i][j].energy)
+                }
+            }
+
         }
 
         fun setDiagonalInclusionsBefore() {
@@ -329,7 +347,7 @@ class Utils{
             var stringer = ""
             for (i in 0..engineController.getModelxSize() - 1) {
                 for (j in 0..engineController.getModelySize() - 1) {
-                    stringer+="$i $j 0 ${engineController.getArray()[i][j].cellPreviousState} ${engineController.getArray()[i][j].cellState} ${engineController.getArray()[i][j].color} ${engineController.getArray()[i][j].isBoundary} ${engineController.getArray()[i][j].isLocked} "
+                    stringer+="$i $j 0 ${engineController.getArray()[i][j].cellPreviousState} ${engineController.getArray()[i][j].cellState} ${engineController.getArray()[i][j].color} ${engineController.getArray()[i][j].isBoundary} ${engineController.getArray()[i][j].isLocked} ${engineController.getArray()[i][j].energy} "
                 }
                 fileToWrite.appendText(stringer)
                 stringer=""
@@ -345,7 +363,7 @@ class Utils{
             engineController.setModelxSize(inputList[0].toInt())
             engineController.setModelySize(inputList[1].toInt())
             var bufferList = inputList.subList(3,inputList.size)
-            var testArray = Array(engineController.getModelxSize(), {Array(engineController.getModelySize(),{Cell(0,0,"empty","empty",-1,false, false)})})
+            var testArray = Array(engineController.getModelxSize(), {Array(engineController.getModelySize(),{Cell(0,0,"empty","empty",-1,false, false, 0)})})
 
              for(x in 0..bufferList.size-5){
                 if(x%7==0) {
@@ -354,6 +372,7 @@ class Utils{
                     testArray[bufferList[x].toInt()][bufferList[x + 1].toInt()].color = bufferList[x + 5].toInt()
                     testArray[bufferList[x].toInt()][bufferList[x + 1].toInt()].isBoundary = bufferList[x + 6].toBoolean()
                     testArray[bufferList[x].toInt()][bufferList[x + 1].toInt()].isLocked = bufferList[x + 7].toBoolean()
+                    testArray[bufferList[x].toInt()][bufferList[x + 1].toInt()].energy = bufferList[x + 8].toInt()
                 }
             }
             engineController.setArray(testArray)

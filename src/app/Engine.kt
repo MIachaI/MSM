@@ -20,10 +20,12 @@ class User {
     var imageProperty = SimpleObjectProperty<WritableImage>()
     var arrayToWorkOn = SimpleObjectProperty<Array<Array<Cell>>>()
     var arrayOfColors = SimpleObjectProperty<Array<Int>>()
+    var arrayOfEnergy = SimpleObjectProperty<Array<Int>>()
     var probabilityOfChange = SimpleIntegerProperty()
     var fileToImport = SimpleStringProperty()
     var grainsToKeep = SimpleIntegerProperty()
     var drawBoundary = SimpleBooleanProperty()
+    var energyLevel = SimpleIntegerProperty()
 }
 class UserModel(var integersSet: User) : ViewModel(){
     var xSize = bind { integersSet.xSizeProperty }
@@ -38,6 +40,8 @@ class UserModel(var integersSet: User) : ViewModel(){
     var fileToImport = bind {integersSet.fileToImport}
     var grainsToKeep = bind { integersSet.grainsToKeep}
     var drawBoundary = bind { integersSet.drawBoundary}
+    var energyLevel = bind {integersSet.energyLevel}
+    var arrayOfEnergy = bind {integersSet.arrayOfEnergy}
 
 
 
