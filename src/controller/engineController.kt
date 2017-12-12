@@ -104,6 +104,12 @@ class engineController : Controller(){
         fun setEnergyColorArray(arrayToSet: Array<Int>){
             model.arrayOfEnergy = arrayToSet.toProperty()
         }
+        fun getSimulationSteps(): Int{
+            return model.simulationSteps.value.toInt()
+        }
+        fun setSimulationsteps(steps: Int){
+            model.simulationSteps = steps.toProperty()
+        }
 
 /**
         fun runSimulation(){

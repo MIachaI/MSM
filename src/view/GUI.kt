@@ -21,7 +21,7 @@ class MyView: View() {
     private val inclusionType = observableArrayList("Circular before", "Circular after", "Square before", "Square after")
     private val selectedInclusionType = SimpleStringProperty()
 
-    private val simulationType = observableArrayList("Simple growth", "Moore")
+    private val simulationType = observableArrayList("Simple growth", "Moore", "Energy counting")
     private val selectedSimulationType = SimpleStringProperty()
 
     private val dualPhaseCheckbox = SimpleBooleanProperty()
@@ -70,6 +70,8 @@ class MyView: View() {
                         engineController.setArray(Array(model.xSize.value.toInt(), { Array(model.ySize.value.toInt(), { Cell(0, 0, "empty", "empty", 0, false, false, 0) }) }))
                         engineController.setModelxSize(model.xSize.value.toInt())
                         engineController.setModelySize(model.ySize.value.toInt())
+                        Utils.setCoordinatesInArray()
+
 
                     }
                 }
@@ -83,6 +85,10 @@ class MyView: View() {
                               if(selectedSimulationType.value=="Moore"){
                                   engineController.setModelProbability(model.probabilityOfChange.value.toInt())
                                   Utils.mooreGrowth()
+                              }
+                              if(selectedSimulationType.value=="Energy counting"){
+                                  engineController.setSimulationsteps(model.simulationSteps.value.toInt())
+                                  Utils.energyGrowth()
                               }
                               println("Simulation done")
                            }
@@ -122,6 +128,9 @@ class MyView: View() {
                     field("Energy levels"){
                         textfield(model.energyLevel)
                     }
+                    field("Simulation steps"){
+                        textfield(model.simulationSteps)
+                    }
 
                     button("Set Nucleons") {
                         action {
@@ -152,6 +161,7 @@ class MyView: View() {
                             Utils.setEnergyInArray()
                             println("Energy set")
                             println(engineController.getEnergyLevel())
+                            Drawing.setEnergyColors()
                         }
                     }
                 }
@@ -176,7 +186,6 @@ class MyView: View() {
             println(engineController.getBoundaryDrawing())
             engineController.setModelImage(Drawing.drawArray())}
             else{
-                Drawing.setEnergyColors()
                 Drawing.drawEnergy()
 
             }
@@ -190,7 +199,7 @@ class MyView: View() {
                              println(engineController.getBoundaryDrawing())
                              engineController.setModelImage(Drawing.drawArray())}
                          else{
-                             Drawing.setEnergyColors()
+                             println(engineController.getSimulationSteps())
                              Drawing.drawEnergy()
 
                          }

@@ -26,6 +26,7 @@ class User {
     var grainsToKeep = SimpleIntegerProperty()
     var drawBoundary = SimpleBooleanProperty()
     var energyLevel = SimpleIntegerProperty()
+    var simulationSteps = SimpleIntegerProperty()
 }
 class UserModel(var integersSet: User) : ViewModel(){
     var xSize = bind { integersSet.xSizeProperty }
@@ -42,6 +43,7 @@ class UserModel(var integersSet: User) : ViewModel(){
     var drawBoundary = bind { integersSet.drawBoundary}
     var energyLevel = bind {integersSet.energyLevel}
     var arrayOfEnergy = bind {integersSet.arrayOfEnergy}
+    var simulationSteps = bind { integersSet.simulationSteps}
 
 
 

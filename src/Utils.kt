@@ -32,7 +32,17 @@ class Utils{
             }
             return array
         }
-
+        fun setCoordinatesInArray(){
+            var array = engineController.getArray()
+            var xSize = engineController.getModelxSize()
+            var ySize = engineController.getModelySize()
+            for (i in 1..xSize-2) {
+                for (j in 1..ySize-2) {
+                    array[i][j].xCoordinate = i
+                    array[i][j].yCoordinate = j
+                }
+            }
+        }
 
         fun setEnergyInArray(){
             var array = engineController.getArray()
@@ -90,8 +100,6 @@ class Utils{
                         }
                         iterator++
                     }
-
-
                 }
                 catch (e: ArrayIndexOutOfBoundsException){
                     println("found error")
@@ -99,7 +107,6 @@ class Utils{
                 }
             }
             engineController.setArray(betaArray)
-
         }
 
 
@@ -288,6 +295,78 @@ class Utils{
                 }
             }
         }
+        fun shuffledListOfCells(array: Array<Array<Cell>>): MutableList<Cell>{
+            var xSize = engineController.getModelxSize()
+            var ySize = engineController.getModelySize()
+            var shuffledList: MutableList<Cell> = ArrayList()
+            for (i in 2..xSize-3) {
+                for (j in 2..ySize-3) {
+                    shuffledList.add(array[i][j])
+                }
+            }
+            Collections.shuffle(shuffledList)
+            return shuffledList
+        }
+
+        fun checkNeighboursEnergy(){
+
+        }
+        fun energyGrowth(){
+            var xSize = engineController.getModelxSize()
+            var ySize = engineController.getModelySize()
+            var array = engineController.getArray()
+            var shuffledList = shuffledListOfCells(array)
+            val occuranceList = arrayListOf<Int>()
+            var kroneckersDelta = 0;
+            var changingEnergy =0;
+            val random = Random()
+            var randomCell =0;
+            for(k in 0..engineController.getSimulationSteps()){
+                shuffledList=shuffledListOfCells(array)
+                for (l in shuffledList){
+                    occuranceList.clear()
+                    kroneckersDelta=0;
+                    changingEnergy=0;
+
+
+                    var i = l.xCoordinate
+                    var j = l.yCoordinate
+
+                    occuranceList.add(array[i - 1][j - 1].energy)
+                    occuranceList.add(array[i - 1][j].energy)
+                    occuranceList.add(array[i - 1][j + 1].energy)
+                    occuranceList.add(array[i][j - 1].energy)
+                    occuranceList.add(array[i][j + 1].energy)
+                    occuranceList.add(array[i + 1][j - 1].energy)
+                    occuranceList.add(array[i + 1][j].energy)
+                    occuranceList.add(array[i + 1][j + 1].energy)
+                    //println(occuranceList)
+                    for(surroundingCell in 0..occuranceList.size-1){
+                        if(array[i][j].energy==occuranceList[surroundingCell]){
+                            kroneckersDelta++
+                        }
+                    }
+                    randomCell = random.nextInt(7)
+                    for(surroundingCell in 0..occuranceList.size-1){
+                        if(occuranceList[surroundingCell]==occuranceList[randomCell]){
+                            changingEnergy++
+                        }
+                    }
+                   // println("${kroneckersDelta} ${changingEnergy}")
+                    if(kroneckersDelta<=changingEnergy){
+                        println("pyk")
+                        array[i][j].energy=occuranceList[randomCell]
+                    }
+                }
+                engineController.setArray(array)
+            }
+
+
+
+
+
+            engineController.setArray(array)
+        }
 
         fun resetArrayWithSelectedGrains(){
             var temporaryArray = engineController.getArray()
@@ -300,7 +379,6 @@ class Utils{
                     else{
                         temporaryArray[i][j].isLocked = true
                     }
-
                 }
             }
             engineController.setArray(temporaryArray)
