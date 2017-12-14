@@ -42,7 +42,7 @@ class Drawing {
                 val alpha = (Math.random() * 100).toInt() //alpha
                 val red = (Math.random() * 100).toInt() //red
                 val green = (Math.random() * 100).toInt() //green
-                val blue = (Math.random() * 256).toInt() //blue
+                val blue = (Math.random() * 200).toInt() //blue
 
                 val pixel = alpha shl 24 or (red shl 16) or (green shl 8) or blue
                 arrayOfColors[i] = pixel

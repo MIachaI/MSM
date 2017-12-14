@@ -16,6 +16,7 @@ class Utils{
     companion object {
 
         fun setGrainsInArray(): Array<Array<Cell>>{
+            //cellsAtBoundary()
             var iterator=1
             val random = Random()
             val grains = engineController.getNucleonsNumber()
@@ -24,7 +25,7 @@ class Utils{
 
                 var xSize = random.nextInt(engineController.getModelxSize()-2)+1
                 var ySize = random.nextInt(engineController.getModelySize()-2)+1
-                while (array[xSize][ySize].cellState == "empty") {
+                while (array[xSize][ySize].cellState == "empty" && !array[xSize][ySize].isLocked) {
                     array[xSize][ySize].cellState = iterator.toString()
                     array[xSize][ySize].cellPreviousState = iterator.toString()
                     iterator++
@@ -47,13 +48,15 @@ class Utils{
         fun setEnergyInArray(){
             var array = engineController.getArray()
             val random = Random()
-            var energyLevels = engineController.getEnergyLevel()
+            var nucleons = engineController.getNucleonsNumber()
+            println(nucleons)
             var xSize = engineController.getModelxSize()
             var ySize = engineController.getModelySize()
             for (i in 1..xSize-2) {
                 for (j in 1..ySize-2) {
-                    array[i][j].energy = random.nextInt(energyLevels)
-                    println(array[i][j].energy)
+                    if(!array[i][j].isLocked) {
+                        array[i][j].cellState = random.nextInt(nucleons).toString()
+                    }
                 }
             }
 
@@ -183,21 +186,25 @@ class Utils{
             for (i in 1..xSize - 2) {
                 for (j in 1..ySize - 2) {
                         try {
-                            if (array[i - 1][j].cellPreviousState.equals(array[i][j].cellState)!=true && array[i - 1][j].cellPreviousState.equals("inclusion")!=true) {
+                            if (array[i - 1][j].cellPreviousState.equals(array[i][j].cellState)!=true && array[i - 1][j].cellPreviousState.equals("inclusion")!=true && array[i][j].cellPreviousState.equals("empty")!=true) {
                                 array[i][j].isBoundary=true
                                 array[i][j].isLocked=true
                             }
-                            else if (array[i + 1][j].cellPreviousState.equals(array[i][j].cellState)!=true && array[i + 1][j].cellPreviousState.equals("inclusion")!=true) {
+                            else if (array[i + 1][j].cellPreviousState.equals(array[i][j].cellState)!=true && array[i + 1][j].cellPreviousState.equals("inclusion")!=true && array[i][j].cellPreviousState.equals("empty")!=true) {
                                 array[i][j].isBoundary=true
                                 array[i][j].isLocked=true
                             }
-                            else if (array[i][j - 1].cellPreviousState.equals(array[i][j].cellState)!=true && array[i][j - 1].cellPreviousState.equals("inclusion")!=true) {
+                            else if (array[i][j - 1].cellPreviousState.equals(array[i][j].cellState)!=true && array[i][j - 1].cellPreviousState.equals("inclusion")!=true && array[i][j].cellPreviousState.equals("empty")!=true) {
                                 array[i][j].isBoundary=true
                                 array[i][j].isLocked=true
                             }
-                            else if (array[i][j + 1].cellPreviousState.equals(array[i][j].cellState)!=true && array[i][j + 1].cellPreviousState.equals("inclusion")!=true) {
+                            else if (array[i][j + 1].cellPreviousState.equals(array[i][j].cellState)!=true && array[i][j + 1].cellPreviousState.equals("inclusion")!=true && array[i][j].cellPreviousState.equals("empty")!=true) {
                                 array[i][j].isBoundary=true
                                 array[i][j].isLocked=true
+                            }
+                            else {
+                                array[i][j].isBoundary=false
+                                array[i][j].isLocked=false
                             }
                         } catch (e: ArrayIndexOutOfBoundsException) {
                             println("error in $i and $j ")
@@ -213,12 +220,14 @@ class Utils{
             var xSize = engineController.getModelxSize()
             var ySize = engineController.getModelySize()
             var array = engineController.getArray()
+            var stopValue = 0
+            var nextBuffer = 0
             while (true) {
-                var buffer = 0
+                var previousBuffer = 0
                 for (i in 1..xSize - 2) {
                     for (j in 1..ySize - 2) {
                         if (array[i][j].cellPreviousState=="empty") {
-                            buffer++
+                            previousBuffer++
                             try {
                                 if (array[i - 1][j].cellPreviousState.equals("empty")!=true && array[i - 1][j].isLocked ==false && array[i - 1][j].cellPreviousState.equals("inclusion")!=true) {
                                     array[i][j].cellState = array[i - 1][j].cellPreviousState
@@ -244,12 +253,21 @@ class Utils{
                     for (j in 1..ySize-2){
                         engineController.getArray()[i][j].cellPreviousState = engineController.getArray()[i][j].cellState
                     }
-                    println(buffer)
+
                 }
-                if(buffer==0) {
+                println(previousBuffer)
+                if(previousBuffer==nextBuffer){
+
+                    if(stopValue==previousBuffer){
+                        return
+                    }
+                    stopValue=nextBuffer
+                }
+                if(previousBuffer==0) {
                     engineController.setArray(array)
                     return
                 }
+                nextBuffer=previousBuffer
             }
             }
 
@@ -262,24 +280,26 @@ class Utils{
                 var buffer = 0
                 for (i in 1..xSize - 2) {
                     for (j in 1..ySize - 2) {
-                        if (array[i][j].cellPreviousState == "empty") {
-                            buffer++
-                            try {
-                                var temporary = Moore(
-                                        array[i - 1][j - 1].cellPreviousState,
-                                        array[i - 1][j].cellPreviousState,
-                                        array[i - 1][j + 1].cellPreviousState,
-                                        array[i][j - 1].cellPreviousState,
-                                        array[i][j + 1].cellPreviousState,
-                                        array[i + 1][j - 1].cellPreviousState,
-                                        array[i + 1][j].cellPreviousState,
-                                        array[i + 1][j + 1].cellPreviousState)
-                                array[i][j].cellState = temporary.moore()
-                            } catch (e: ArrayIndexOutOfBoundsException) {
-                                println("error in $i and $j ")
-                                continue
+                        if (!array[i][j].isLocked){
+                            if (array[i][j].cellPreviousState == "empty" && !array[i][j].isLocked) {
+                                buffer++
+                                try {
+                                    var temporary = Moore(
+                                            array[i - 1][j - 1].cellPreviousState,
+                                            array[i - 1][j].cellPreviousState,
+                                            array[i - 1][j + 1].cellPreviousState,
+                                            array[i][j - 1].cellPreviousState,
+                                            array[i][j + 1].cellPreviousState,
+                                            array[i + 1][j - 1].cellPreviousState,
+                                            array[i + 1][j].cellPreviousState,
+                                            array[i + 1][j + 1].cellPreviousState)
+                                    array[i][j].cellState = temporary.moore()
+                                } catch (e: ArrayIndexOutOfBoundsException) {
+                                    println("error in $i and $j ")
+                                    continue
+                                }
                             }
-                        }
+                    }
                     }
                 }
 
@@ -332,17 +352,16 @@ class Utils{
                     var i = l.xCoordinate
                     var j = l.yCoordinate
 
-                    occuranceList.add(array[i - 1][j - 1].energy)
-                    occuranceList.add(array[i - 1][j].energy)
-                    occuranceList.add(array[i - 1][j + 1].energy)
-                    occuranceList.add(array[i][j - 1].energy)
-                    occuranceList.add(array[i][j + 1].energy)
-                    occuranceList.add(array[i + 1][j - 1].energy)
-                    occuranceList.add(array[i + 1][j].energy)
-                    occuranceList.add(array[i + 1][j + 1].energy)
-                    //println(occuranceList)
+                    occuranceList.add(array[i - 1][j - 1].cellState.toInt())
+                    occuranceList.add(array[i - 1][j].cellState.toInt())
+                    occuranceList.add(array[i - 1][j + 1].cellState.toInt())
+                    occuranceList.add(array[i][j - 1].cellState.toInt())
+                    occuranceList.add(array[i][j + 1].cellState.toInt())
+                    occuranceList.add(array[i + 1][j - 1].cellState.toInt())
+                    occuranceList.add(array[i + 1][j].cellState.toInt())
+                    occuranceList.add(array[i + 1][j + 1].cellState.toInt())
                     for(surroundingCell in 0..occuranceList.size-1){
-                        if(array[i][j].energy==occuranceList[surroundingCell]){
+                        if(array[i][j].cellState.toInt()==occuranceList[surroundingCell]){
                             kroneckersDelta++
                         }
                     }
@@ -352,10 +371,8 @@ class Utils{
                             changingEnergy++
                         }
                     }
-                   // println("${kroneckersDelta} ${changingEnergy}")
                     if(kroneckersDelta<=changingEnergy){
-                        println("pyk")
-                        array[i][j].energy=occuranceList[randomCell]
+                        array[i][j].cellState=occuranceList[randomCell].toString()
                     }
                 }
                 engineController.setArray(array)
@@ -377,7 +394,7 @@ class Utils{
                         temporaryArray[i][j].cellState = "empty"
                         temporaryArray[i][j].cellPreviousState = "empty"}
                     else{
-                        temporaryArray[i][j].isLocked = true
+                        //temporaryArray[i][j].isLocked = true
                     }
                 }
             }

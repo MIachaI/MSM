@@ -157,6 +157,7 @@ class MyView: View() {
                     }
                     button("Set energy") {
                         action {
+                            engineController.setNucleonsNumber(model.nucleonsNumber.value.toInt())
                             engineController.setEnergyLevel(model.energyLevel.value.toInt())
                             Utils.setEnergyInArray()
                             println("Energy set")
