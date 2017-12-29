@@ -215,6 +215,47 @@ class Utils{
             engineController.setArray(array)
         }
 
+        fun distributeEnergyHeterogeniously(){
+            cellsAtBoundary()
+            var xSize = engineController.getModelxSize()
+            var ySize = engineController.getModelySize()
+            var array = engineController.getArray()
+            for (i in 1..xSize - 2) {
+                for (j in 1..ySize - 2) {
+                    try {
+                       if (array[i][j].isBoundary){
+                           array[i][j].energy=5
+                       }
+                        else {
+                           array[i][j].energy=2
+                       }
+                    } catch (e: ArrayIndexOutOfBoundsException) {
+                        println("error in $i and $j ")
+                        continue
+                    }
+                }
+            }
+            engineController.setArray(array)
+        }
+        fun distributeEnergyHomogeniously(){
+            cellsAtBoundary()
+            var xSize = engineController.getModelxSize()
+            var ySize = engineController.getModelySize()
+            var array = engineController.getArray()
+            for (i in 1..xSize - 2) {
+                for (j in 1..ySize - 2) {
+                    try {
+                        array[i][j].energy=5
+
+                    } catch (e: ArrayIndexOutOfBoundsException) {
+                        println("error in $i and $j ")
+                        continue
+                    }
+                }
+            }
+            engineController.setArray(array)
+        }
+
 
         fun grainGrow(){
             var xSize = engineController.getModelxSize()
@@ -394,7 +435,7 @@ class Utils{
                         temporaryArray[i][j].cellState = "empty"
                         temporaryArray[i][j].cellPreviousState = "empty"}
                     else{
-                        //temporaryArray[i][j].isLocked = true
+                        temporaryArray[i][j].isLocked = true
                     }
                 }
             }

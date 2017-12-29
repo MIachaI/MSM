@@ -27,6 +27,7 @@ class MyView: View() {
     private val dualPhaseCheckbox = SimpleBooleanProperty()
     private val drawBoundariesCheckbox = SimpleBooleanProperty()
     private val workOnEnergy = SimpleBooleanProperty()
+    private val energyDistribution = SimpleBooleanProperty()
     init {
         engineController.setModelColorArray(Drawing.setColors(1000))
         reloadViewsOnFocus()
@@ -97,6 +98,7 @@ class MyView: View() {
                 checkbox("Dual phase mode", dualPhaseCheckbox)
                 checkbox("Draw boundaries", drawBoundariesCheckbox)
                 checkbox("Energy counting mode", workOnEnergy)
+                checkbox("Heterogenic energy distribution", energyDistribution)
 
                 button("Reset unselected grains") {
                     action {
@@ -182,9 +184,10 @@ class MyView: View() {
              button("Render image") {
         action {
             if(!workOnEnergy.value){
-            Utils.cellsAtBoundary()
+            //Utils.cellsAtBoundary()
             engineController.setBoundaryDrawing(drawBoundariesCheckbox.value)
             println(engineController.getBoundaryDrawing())
+                Utils.distributeEnergyHeterogeniously()
             engineController.setModelImage(Drawing.drawArray())}
             else{
                 Drawing.drawEnergy()

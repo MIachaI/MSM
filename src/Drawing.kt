@@ -13,11 +13,7 @@ import javafx.scene.image.WritableImage
 class Drawing {
 
     companion object {
-        /**
-         * Sets random color to certain grain - it gives high scaleability
-         * @param grainsNumber                  Number of grains which growth we are trying to simulate
-         * @return arrayOfColors                An array with colors on the grain position
-         */
+
         fun setColors(grainsNumber: Int): Array<Int> {
             val arrayOfColors = Array(grainsNumber + 1, { 0 })
 
