@@ -28,6 +28,7 @@ class MyView: View() {
     private val drawBoundariesCheckbox = SimpleBooleanProperty()
     private val workOnEnergy = SimpleBooleanProperty()
     private val energyDistribution = SimpleBooleanProperty()
+    private val distributeEnergyOnBoundary = SimpleBooleanProperty()
     init {
         engineController.setModelColorArray(Drawing.setColors(1000))
         reloadViewsOnFocus()
@@ -80,6 +81,7 @@ class MyView: View() {
                     field("Probability of change") {textfield(model.probabilityOfChange)                }
                      button("Simulate") {
                           action {
+                              engineController.setEnergyLevel(model.energyLevel.value.toInt())
                               if(selectedSimulationType.value=="Simple growth"){
                                   Utils.grainGrow()
                               }
@@ -99,6 +101,7 @@ class MyView: View() {
                 checkbox("Draw boundaries", drawBoundariesCheckbox)
                 checkbox("Energy counting mode", workOnEnergy)
                 checkbox("Heterogenic energy distribution", energyDistribution)
+                checkbox("Distribute energy on boundary", distributeEnergyOnBoundary)
 
                 button("Reset unselected grains") {
                     action {
@@ -181,20 +184,52 @@ class MyView: View() {
 
                 }
             }
-             button("Render image") {
-        action {
-            if(!workOnEnergy.value){
-            //Utils.cellsAtBoundary()
-            engineController.setBoundaryDrawing(drawBoundariesCheckbox.value)
-            println(engineController.getBoundaryDrawing())
-                Utils.distributeEnergyHeterogeniously()
-            engineController.setModelImage(Drawing.drawArray())}
-            else{
-                Drawing.drawEnergy()
+            button("Set some 0-energy nucleons") {
+                action {
+                    if(distributeEnergyOnBoundary.value){
+                        Utils.placeSomeNucleonsWithEnergyOnBoundary()
+                    }
+                    if(!distributeEnergyOnBoundary.value) {
+                        Utils.placeSomeNucleonsWithEnergy()
+                    }
 
+                }
             }
-        }
-    }
+             button("Render image") {
+                 action {
+                     if(!workOnEnergy.value){
+                         //Utils.cellsAtBoundary()
+                         engineController.setBoundaryDrawing(drawBoundariesCheckbox.value)
+                         println(engineController.getBoundaryDrawing())
+                         if(energyDistribution.value){
+                             Utils.distributeEnergyHeterogeniously()
+                         }
+                         if(!energyDistribution.value) {
+                             Utils.distributeEnergyHomogeniously()
+                         }
+                         engineController.setModelImage(Drawing.drawArray())}
+                     else{
+                         Drawing.drawEnergy()
+
+                     }
+                 }
+             }
+            button("Distribute energy") {
+                action {
+                    if(!workOnEnergy.value){
+                        if(energyDistribution.value){
+                            Utils.distributeEnergyHeterogeniously()
+                        }
+                        if(!energyDistribution.value) {
+                            Utils.distributeEnergyHomogeniously()
+                        }
+                        engineController.setModelImage(Drawing.drawArray())}
+                    else{
+                        engineController.setModelImage(Drawing.drawEnergy())
+
+                    }
+                }
+            }
                  button("Show result") {
                      action {
                          if(!workOnEnergy.value){

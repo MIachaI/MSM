@@ -75,7 +75,7 @@ class Drawing {
             return SwingFXUtils.toFXImage(img, null)
         }
 
-        fun drawEnergy() {
+        fun drawEnergy(): WritableImage {
             val img = BufferedImage(engineController.getModelxSize(), engineController.getModelySize(), BufferedImage.TYPE_INT_RGB)
             for (i in 1..engineController.getModelxSize() - 2) {
                 for (j in 1..engineController.getModelySize() - 2) {
@@ -83,6 +83,7 @@ class Drawing {
                 }
             }
             engineController.setModelImage(SwingFXUtils.toFXImage(img, null))
+            return SwingFXUtils.toFXImage(img, null)
         }
     }
 }

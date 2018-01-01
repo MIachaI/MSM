@@ -256,6 +256,49 @@ class Utils{
             engineController.setArray(array)
         }
 
+        fun placeSomeNucleonsWithEnergy(){
+            var iterator = 1
+            val random = Random()
+            var betaArray = engineController.getArray()
+            while (iterator <= engineController.getNucleonsNumber()) {
+                try {
+                    var xSize = random.nextInt(engineController.getModelxSize() - 2) + 1
+                    var ySize = random.nextInt(engineController.getModelySize() - 2) + 1
+                    betaArray[xSize][ySize].cellState = iterator.toString()
+                    betaArray[xSize][ySize].cellPreviousState = iterator.toString()
+                    betaArray[xSize][ySize].energy = 0
+                    iterator++
+                }
+                catch (e: ArrayIndexOutOfBoundsException){
+                    println("found error")
+                    continue
+                }
+            }
+            engineController.setArray(betaArray)
+        }
+
+        fun placeSomeNucleonsWithEnergyOnBoundary(){
+            var iterator = 1
+            val random = Random()
+            var betaArray = engineController.getArray()
+            while (iterator <= engineController.getNucleonsNumber()) {
+                try {
+                    var xSize = random.nextInt(engineController.getModelxSize() - 2) + 1
+                    var ySize = random.nextInt(engineController.getModelySize() - 2) + 1
+                    if(betaArray[xSize][ySize].isBoundary){
+                        betaArray[xSize][ySize].cellState = iterator.toString()
+                        betaArray[xSize][ySize].cellPreviousState = iterator.toString()
+                        betaArray[xSize][ySize].energy = 0
+                        iterator++}
+
+                }
+                catch (e: ArrayIndexOutOfBoundsException){
+                    println("found error")
+                    continue
+                }
+            }
+            engineController.setArray(betaArray)
+        }
 
         fun grainGrow(){
             var xSize = engineController.getModelxSize()
